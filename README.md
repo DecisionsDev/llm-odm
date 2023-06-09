@@ -17,6 +17,17 @@ There are two main value props the LangChain framework provides:
    * Components: LangChain provides modular abstractions for the components neccessary to work with language models. LangChain also has collections of implementations for all these abstractions. The components are designed to be easy to use, regardless of whether you are using the rest of the LangChain framework or not.
    * Use-Case Specific Chains: Chains can be thought of as assembling these components in particular ways in order to best accomplish a particular use case. These are intended to be a higher level interface through which people can easily get started with a specific use case. These chains are also designed to be customizable.
 
+# Interact with the ODM decision service trace.
+
+In this sample we will show you how to query Decision Service data execution with a natural language. This can be KPI, metrics or dataset. 
+This will used the [Spark LangChain integration](https://python.langchain.com/en/latest/modules/agents/toolkits/examples/spark.html?highlight=spark).
+
+The instructions to install it can be found in this [directory](chat-with-executions-data). 
+
+
+<img src="chat-with-executions-data/images/data-query.gif"  />
+
+
 # Interact with the miniloan decision service
 
 In the first sample, the [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
@@ -26,14 +37,6 @@ The instructions to install it can be found in this [directory](chat-with-loande
 
 <img src="chat-with-loandecisionservice/images/demo_presentation.gif"  />
 
-# Interact with the ODM decision service trace.
-
-In this sample we will show you how to query Decision Service data execution with a natural language. This can be KPI, metrics or dataset. 
-This will used the [Spark LangChain integration](https://python.langchain.com/en/latest/modules/agents/toolkits/examples/spark.html?highlight=spark).
-
-The instructions to install it can be found in this [directory](chat-with-executions-data).
-
-<img src="chat-with-executions-data/images/data-query.gif"  />
 
 # Interact with ODM Business console
 
