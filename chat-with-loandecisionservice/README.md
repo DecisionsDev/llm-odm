@@ -41,6 +41,8 @@ Then you can ask queston to the chat bot such as:
 
 
 ### Code explain
+
+1. Extract from the Decision Server the Ruleset definition.
 ```python
 def decisionServiceOperation():
 
@@ -48,4 +50,34 @@ def decisionServiceOperation():
 
     operation = APIOperation.from_openapi_spec(spec, '/mydeployment/1.0/Miniloan_ServiceRuleset/1.0', "post")
     return operation
+operation=decisionServiceOperation()
+```
+
+2. Initialize the LLM Agent. Agent make a glue between the LLM and the backend throw LangChain
+```python
+def initializeLLMAgent(operation):
+    llm = OpenAI() # Load a Language Model
+    # Manage ODM Basic Authentication 
+    message = "odmAdmin:"+os.environ["ODM_ADMIN_PASSWORD"]
+    message_bytes = message.encode('ascii')
+    base64_bytes = base64.b64encode(message_bytes)
+    base64_message = base64_bytes.decode('ascii')
+    headers = {
+        "Authorization": f"Basic "+base64_message
+    }
+    odm_requests_wrapper=RequestsWrapper(headers=headers)
+    # Load the Decision Operation Swagger definitation in the LLM Model.
+    chain = OpenAPIEndpointChain.from_api_operation(
+                                                    operation, 
+                                                    llm, 
+                                                    verify=False,
+                                                    requests=odm_requests_wrapper, 
+                                                    verbose=True,
+                                                    return_intermediate_steps=True)
+    return chain
+odm_agent = initializeLLMAgent(operation)
+```
+3. Interact with the Agent
+```python
+ response['output'] = odm_agent(query) # Query is the user input.
 ```
