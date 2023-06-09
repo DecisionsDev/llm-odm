@@ -29,8 +29,7 @@ def checkEnvironment():
 
 def decisionServiceOperation():
 
- #   spec = OpenAPISpec.from_url(ODMRUNTIMEURL+"DecisionService/rest/v1/mydeployment/1.0/Miniloan_ServiceRuleset/1.0/OPENAPI?format=YAML")
-    spec = OpenAPISpec.from_file("ads-loan.yaml")
+    spec = OpenAPISpec.from_url(ODMRUNTIMEURL+"DecisionService/rest/v1/mydeployment/1.0/Miniloan_ServiceRuleset/1.0/OPENAPI?format=YAML")
     operation = APIOperation.from_openapi_spec(spec, '/approval/execute', "post")
     return operation
 
