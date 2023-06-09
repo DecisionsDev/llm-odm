@@ -1,0 +1,116 @@
+openapi: 3.1.0
+info:
+  title: Miniloan_ServiceRuleset API
+  description: API to invoke the execution of the decision service operation Miniloan_ServiceRuleset.
+  version: 1.0.0
+servers:
+- url: http://localhost:9060/DecisionService/rest
+paths:
+  /mydeployment/1.0/Miniloan_ServiceRuleset/1.0:
+    post:
+      summary: Invokes the execution of the decision service operation Miniloan_ServiceRuleset.
+      description: Execute a loan decision service. credit score and name is mandatory. If it's not specified you should aks a question.
+      operationId: callMiniloan_ServiceRulesetDecisionServiceOperation
+      requestBody:
+        description: Request for the execution of the decision service operation.
+          Contains notably the input parameters that are used for the execution.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request'
+        required: true
+      responses:
+        "200":
+          description: Response for the execution of the decision service operation.
+            Contains notably the output parameters that are returned by the execution.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        default:
+          description: Error occurring when invoking the execution of the decision
+            service operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Request:
+      type: object
+      properties:
+        __DecisionID__:
+          type: string
+          description: "Unique identifier representing the execution of the decision\
+            \ service operation. If it is not specified, it will be computed automatically."
+        borrower:
+          $ref: '#/components/schemas/Borrower'
+          description: "Borrower qsdkfj qsdfklj qsdf"
+        loan:
+          $ref: '#/components/schemas/Loan'
+      description: Request for the execution of the decision service operation. Contains
+        notably the input parameters that are used for the execution. The credit score and name is mandatory. If it's not specified you should aks a question.
+    Response:
+      type: object
+      properties:
+        __DecisionID__:
+          type: string
+          description: "Unique identifier representing the execution of the decision\
+            \ service operation. If it is not specified, it will be computed automatically."
+        loan:
+          $ref: '#/components/schemas/Loan'
+      description: Response for the execution of the decision service operation. Contains
+        notably the output parameters that are returned by the execution.
+    Borrower:
+      type: object
+      description: "Borrower represent the informations that is required to compute the loan. The credit scrore and name is mandatory.  If it's not specified you should aks a question. "
+      required: [creditScore, name]
+      properties:
+        name:
+          type: string
+        creditScore:
+          type: integer
+          format: int32
+        yearlyIncome:
+          type: integer
+          format: int32
+    Loan:
+      type: object
+      required: [amount, duration]
+      properties:
+        amount:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        yearlyInterestRate:
+          type: number
+          format: double
+        yearlyRepayment:
+          type: integer
+          format: int32
+        approved:
+          type: boolean
+        messages:
+          type: array
+          items:
+            type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP error code.
+          format: int32
+        message:
+          type: string
+          description: Error message.
+        details:
+          type: string
+          description: Detailed error message.
+        errorCode:
+          type: string
+          description: Product error code.
+      description: Error occurring when invoking the execution of the decision service
+        operation.

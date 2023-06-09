@@ -1,0 +1,4660 @@
+openapi: 3.0.1
+info:
+  title: IBM Operational Decision Manager Decision Center API
+  description: Explore, build, test, and deploy decision services that are stored in Decision Center
+  termsOfService: http://www.ibm.com/legal/us/en/?lnk=flg-tous-usen
+  version: v1
+servers:
+  - url: http://localhost:9060/decisioncenter-api
+    description: Generated server url
+tags:
+  - name: Admin
+  - name: Govern
+  - name: Build
+  - name: About
+  - name: Manage
+  - name: Explore
+paths:
+  /v1/snapshots/{snapshotId}/rename:
+    put:
+      tags:
+        - Manage
+      summary: Rename a snapshot from a decision service
+      operationId: renameSnapshot
+      parameters:
+        - name: snapshotId
+          in: path
+          description: ID of the snapshot to rename.
+          required: true
+          schema:
+            type: string
+        - name: newName
+          in: query
+          description: New name of the snapshot.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/server:
+    put:
+      tags:
+        - Manage
+      summary: Add a target server to use for deployments, simulations, and tests
+      operationId: addServer
+      parameters:
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ServerPutInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Server'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/validationactivity:
+    put:
+      tags:
+        - Govern
+      summary: Create a validation activity in an open release
+      description: 'The data required to create the validation activity is provided in JSON payload.<br> Mandatory fields in the JSON payload: <br> - Name of the validation activity, which must be unique in the decision service<br>  - Target date of the validation activity<br> - Name of the owner of the validation activity<br>Note: If provided, the names of approvers and authors are checked against registered users.'
+      operationId: createValidationActivity
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        description: The JSON payload describing the validation activity to create
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ActivityInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ValidationActivity'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/changeactivity:
+    put:
+      tags:
+        - Govern
+      summary: Create a change activity in an open release
+      description: 'The data required to create the change activity is provided in a JSON payload.<br> Mandatory fields in the JSON payload: <br> - Nname of the change activity, which must be unique in the decision service<br>  - Target date of the change activity<br> - Name of the owner of the change activity<br>Notes:<br> - If provided, the names approvers and authors are checked against registered users.<br>- The name of the activity cannot contian any of the following characters: ":*/\<>? <br>'
+      operationId: createChangeActivity
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        description: The JSON payload describing the change activity to create
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ActivityInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ChangeActivity'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/snapshots:
+    get:
+      tags:
+        - Explore
+      summary: List of the snapshots that are associated with the decision service
+      description: 'By default, all the snapshots that are associated with the decision service are returned. You can scope the returned list to, for example, a parent release or standard snapshots only,activity, or branch that uses the ''q'' parameter. For example: q=parentId:ID_OF_A_PARENT_BASELINE,kind:StandardSnapshot'
+      operationId: snapshots
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects on their properties. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all elements are returned
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageSnapshot'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    put:
+      tags:
+        - Manage
+      summary: Create a snapshot of a branch in the decision service
+      description: To create a snapshot, the status of the branch, if any, cannot be 'complete' or 'canceled'.
+      operationId: snapshot
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, or release. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: The name of the snapshot to create.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardSnapshot'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/releases:
+    get:
+      tags:
+        - Explore
+      summary: List of the releases in the decision service
+      operationId: releases
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRelease'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    put:
+      tags:
+        - Govern
+      summary: Create a new release in a decision service
+      description: 'The data required to create the release is provided in a JSON payload.<br> Mandatory fields in the JSON payload: <br> - Parent ID: the id of the release to start from in the decision service<br>  - Name of the release: must be unique in the decision service<br>  - Target date of the release<br> - Name of the owner of the release<br><br>Notes: <br>- The target date must be set to a date no earlier than today.- The owner of the release must be a registered user.<br>- The name of the release cannot include any of the following characters: ":*/\<>? <br>- If provided, approvers'' names are checked against registered users names.'
+      operationId: createRelease
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        description: The JSON payload describing the release to create.
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ReleaseInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Release'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/branches:
+    get:
+      tags:
+        - Explore
+      summary: List of the branches in the decision service
+      description: Returns only branches, not releases or activities.
+      operationId: branches
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageBranch'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    put:
+      tags:
+        - Manage
+      summary: Create a new branch in a decision service
+      operationId: createBranch
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: parentBranchId
+          in: query
+          description: ID of the parent branch.
+          required: true
+          schema:
+            type: string
+        - name: branchName
+          in: query
+          description: Name of the branch you want to create.
+          required: true
+          schema:
+            type: string
+        - name: documentation
+          in: query
+          description: Documentation of the branch you want to create.
+          required: false
+          schema:
+            type: string
+        - name: propagateSharedDependencies
+          in: query
+          description: When the parent branch is shared, and it has dependencies with other projects, the shared dependencies are propagated in the newly created branch. False by default.
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Branch'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/branches/{branchId}/rename:
+    put:
+      tags:
+        - Manage
+      summary: Rename a branch from a decision service
+      operationId: renameBranch
+      parameters:
+        - name: branchId
+          in: path
+          description: ID of the branch to rename.
+          required: true
+          schema:
+            type: string
+        - name: newName
+          in: query
+          description: New name of the branch.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/branches/{branchId}/copy:
+    put:
+      tags:
+        - Manage
+      summary: Create a new branch from an existing one, and set its parent to the main branch, or the initial release in the case of releases
+      description: Useful when you want to save a branch before you delete its parent branch.By copying a branch, and then checking that its copy works correctly, you can then delete its parent branch without losing the contents of the copied branch.
+      operationId: copyBranch
+      parameters:
+        - name: branchId
+          in: path
+          description: ID of the branch to copy.
+          required: true
+          schema:
+            type: string
+        - name: branchName
+          in: query
+          description: Name of the branch you want to create.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Branch'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/testsuites/{testSuiteId}/run:
+    post:
+      tags:
+        - Build
+      summary: Run a test suite
+      operationId: run
+      parameters:
+        - name: testSuiteId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the release, branch, or snapshot to work with. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: deploymentSnapshotName
+          in: query
+          description: Name of the deployment snapshot to create or use
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestReport'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/servers/{serverId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the server
+      operationId: server
+      parameters:
+        - name: serverId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Server'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    post:
+      tags:
+        - Manage
+      summary: Update a target server to use for deployments, simulations, and tests
+      description: Empty property values are ignored and do not clear previously set values
+      operationId: updateServer
+      parameters:
+        - name: serverId
+          in: path
+          description: The ID of the server
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ServerPostInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Server'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Manage
+      summary: Remove a target server to use for deployments, simulations, and tests
+      operationId: deleteServer
+      parameters:
+        - name: serverId
+          in: path
+          description: The ID of the server
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/repository/ldap/sync:
+    post:
+      tags:
+        - Admin
+      summary: Synchronize the repository with any associated LDAP server
+      description: You must have the 'rtsAdministrator' role to perform this action.
+      operationId: ldapSync
+      parameters:
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the release
+      operationId: release
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Release'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    post:
+      tags:
+        - Govern
+      summary: Update an open release of a decision service
+      description: 'This operation can be done by the release owner or an administrator.<br>Only the provided fields in the JSON payload are used for updating.<br>An empty field in the JSON payload deletes its corresponding data during an update.<br>Required fields:<br>- Name of the release<br>- Owner of the release<br>- Target date of the release<br><br>Notes: Approvers who are either in ApprovedChanges or RejectedChanges state might not be removed.<br>The target date of the release cannot be set to a date earlier than today.<br>The owner of the release must be a registered user.<br>The name of the release cannot contain any of the following characters: ":*/\<>? <br>'
+      operationId: updateRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        description: The JSON payload describing the release to update
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/UpdateReleaseInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Release'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Govern
+      summary: Delete an open release in a decision service
+      description: This operation can be done by the release owner or an administrator.
+      operationId: deleteRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/reopen:
+    post:
+      tags:
+        - Govern
+      summary: Reopen a release that is canceled or rejected in a decision service
+      description: This operation can be done by the release owner or an administrator.
+      operationId: reopenRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/removeapprover:
+    post:
+      tags:
+        - Govern
+      summary: Remove an approver from an open release of a decision service
+      description: This operation can be done by the release owner or an administrator.
+      operationId: removeReleaseApprover
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: approverName
+          in: query
+          description: the name of the approver to remove.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/reject:
+    post:
+      tags:
+        - Govern
+      summary: Reject the open release of a decision service
+      description: 'An authenticated approver can reject a release and include an optional comment to explain the rejection.<br> Note: The authenticated activity owner or administrator can reject the release on behalf of an approver. In this case, the approver''s name must be provided as a parameter.'
+      operationId: rejectRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the user on behalf of whom rejecting the release.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: the rejection comment.
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/changeowner:
+    post:
+      tags:
+        - Govern
+      summary: Change the owner of an open release of a decision service
+      description: When this operation is done, only the new owner or an administrator can do owner's tasks in this release.<br>This operation can be done by the release owner or an administrator.
+      operationId: changeReleaseOwner
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ownerName
+          in: query
+          description: the name of the owner.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/cancel:
+    post:
+      tags:
+        - Govern
+      summary: Cancel an open release in a decision service
+      description: This operation can be done by the release owner or an administrator.<br>
+      operationId: cancelRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/approve:
+    post:
+      tags:
+        - Govern
+      summary: Approve an open release of a decision service
+      description: 'An authenticated approver can approve a release and include an optional comment to explain the approval.<br>Note: The authenticated activity owner or administrator can approve this release on behalf of an approver.In this case, the approver''s name must be provided as a parameter.'
+      operationId: approveRelease
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the user on behalf of whom approving the release.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: the approval comment.
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/allowapproval:
+    post:
+      tags:
+        - Govern
+      summary: Allow the approval of an open release of a decision service
+      description: The owner of a release allows the approval of the release when all the release activities are completed.<br>This operation can be done by the release owner or an administrator.
+      operationId: allowReleaseApproval
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/releases/{releaseId}/addapprover:
+    post:
+      tags:
+        - Govern
+      summary: Add an approver to an open release of a decision service
+      description: This operation can be done by the release owner or an administrator.<br>
+      operationId: addReleaseApprover
+      parameters:
+        - name: releaseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: approverName
+          in: query
+          description: the name of the approver to add.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/dynamicdomains/{decisionServiceId}/update:
+    post:
+      tags:
+        - Admin
+      summary: Update dynamic domains
+      operationId: updateDynamicDomains
+      parameters:
+        - name: decisionServiceId
+          in: path
+          description: ID of the decision service
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the branch. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: bomClassesFQN
+          in: query
+          description: Comma-separated list of fully qualified names of BOM classes for which you want to update the domain. By default all domains are updated
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/deployments/{deploymentId}/deploy:
+    post:
+      tags:
+        - Build
+      summary: Deploy a RuleApp to an execution server (Rule Execution Server)
+      description: If no deployment snapshot name is given, a deployment snapshot is created if the deployment configurationhas the 'snapshotMode' attribute set to 'Always'.<br>If a deployment snapshot name is provided, a deployment snapshot is created with that name if it does not already exist. <br>This deployment snapshot is then used as the basis for building the RuleApp archive.<br>The response body contains the deployment snapshot that is created or used, the list of checking messages, if any, and a byte array of the archive if the <tt>includeArchive</tt> flag is set to false.
+      operationId: deploy
+      parameters:
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the release, branch, or snapshot to work with. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: deploymentSnapshotName
+          in: query
+          description: Name of the deployment snapshot to create or use
+          required: false
+          schema:
+            type: string
+        - name: serverId
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number in the list of errors, if any
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the error page. If empty, all errors are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentResult'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/deployments/{deploymentId}/build:
+    post:
+      tags:
+        - Build
+      summary: Build a RuleApp for the deployment configuration
+      description: If no deployment snapshot name is given, a deployment snapshot is created if deployment configuration has the 'snapshotMode' attribute set to 'Always'.<br>If a deployment snapshot name is provided, a deployment snapshot is created with that name if it does not already exist. <br>This deployment snapshot is then used as the basis for building the RuleApp archive.<br>The response body contains the deployment snapshot that is created or used, the list of checking messages, if any, and a byte array of the archive if the <tt>includeArchive</tt> flag is set to false.
+      operationId: build
+      parameters:
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the release, branch, or snapshot to work with. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: deploymentSnapshotName
+          in: query
+          description: Name of the deployment snapshot to create or use
+          required: false
+          schema:
+            type: string
+        - name: includeArchive
+          in: query
+          description: Include the archive byte array in the response. False by default. Don't set this flag for very large files.
+          required: false
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number in the list of errors, if any
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the error page. If empty, all the errors are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentResult'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/snapshot:
+    post:
+      tags:
+        - Build
+      summary: Create a snapshot of a branch in the decision service
+      description: To create a snapshot, the status of the branch, if any, cannot be 'complete' or 'canceled'.
+      operationId: snapshot_1
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, or release. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: The name of the snapshot to create.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardSnapshot'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the activity
+      operationId: activity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Activity'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    post:
+      tags:
+        - Govern
+      summary: Update an activity in an open release
+      description: 'Only the provided fields in the JSON payload are used in updating.<br>An empty field in the JSON payload deletes the corresponding data during the update.<br>Required fields:<br>- Name of the activity<br>- Owner of the activity<br>- Target date of the activity<br><br>Notes: <br>- Approvers who are either in ApprovedChanges or RejectedChanges state cannot be removed.<br>- Any authors who contributed to this activity with modifications cannot be removed.<br>- The target date of the activity cannot be set to a date earlier than today, and no later than the release target date.<br>- The name of the activity cannot contain any of the following characters: ":*/\<>? <br>'
+      operationId: updateActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        description: The JSON payload describing the Activity to update
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/ActivityInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/Activity'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Govern
+      summary: Delete an activity in an open release
+      description: This operation can be done by the release owner or an administrator.
+      operationId: deleteActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/resumework:
+    post:
+      tags:
+        - Govern
+      summary: Resume work in an activity in an open release
+      description: 'An author can resume work in an activity after previously finishing it.<br>Note: The authenticated activity owner or administrator can resume work on behalf of an author. In this case, the authors''s name must be provided as a parameter.'
+      operationId: resumeWorkInActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the person on behalf of whom resuming work
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/reopen:
+    post:
+      tags:
+        - Govern
+      summary: Reopen an activity in an open release
+      description: This operation can be done by the activity owner or an administrator.
+      operationId: reopenActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/removeauthor:
+    post:
+      tags:
+        - Govern
+      summary: Remove an author from an activity in an open release
+      description: The author matching the provided name is removed from the activity's list of authors.<br>This operation can be done by the activity owner or an administrator.
+      operationId: removeActivityAuthor
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: authorName
+          in: query
+          description: the name of the author to remove
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/removeapprover:
+    post:
+      tags:
+        - Govern
+      summary: Remove an approver from an activity in an open release
+      description: The approver matching the provided name is removed from the list of approvers.<br>This operation can be done by the activity owner or an administrator.
+      operationId: removeActivityApprover
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: approverName
+          in: query
+          description: the name of the approver to remove
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/reject:
+    post:
+      tags:
+        - Govern
+      summary: Reject changes of an activity in an open release
+      description: 'An authenticated approver can reject an activity and include an optional comment to explain the rejection.<br>Note: The authenticated activity owner or administrator can reject the activity on behalf of an approver. In this case, the approver''s name must be provided as a parameter.'
+      operationId: rejectChangesInActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the user for whom the activity is rejected
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: the rejection comment.
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/finishwork:
+    post:
+      tags:
+        - Govern
+      summary: Finish work on an activity in an open release
+      description: 'When done, the author indicates that the work is finished. <br>Note: The authenticated activity owner or administrator can finish work on behalf of an author. In this case, the authors''s name must be provided as a parameter.'
+      operationId: finishWorkInActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the person on behalf of whom finishing work
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/changeowner:
+    post:
+      tags:
+        - Govern
+      summary: Change the owner of an activity in an open release
+      description: The owner of the activity is changed by the user matching the provided name.<br>This operation can be done by the activity owner or an administrator.
+      operationId: changeActivityOwner
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ownerName
+          in: query
+          description: the name of the owner to change
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/cancel:
+    post:
+      tags:
+        - Govern
+      summary: Cancel an activity in an open release
+      description: This operation can be done by the activity owner or an administrator.<br>
+      operationId: cancelActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/approve:
+    post:
+      tags:
+        - Govern
+      summary: Approve changes of an activity in an open release
+      description: 'An authenticated approver can approve an activity and includ an optional comment to explain the approval.<br>Note: The authenticated activity owner or administrator can approve this activity on behalf of an approver. In this case, the approver''s name must be provided as a parameter.'
+      operationId: approveChangesInActivity
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userName
+          in: query
+          description: the name of the user on behalf of whom approving this activity
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: the approval comment.
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/allowapproval:
+    post:
+      tags:
+        - Govern
+      summary: Allow approval for an activity in an open release
+      description: The authenticated activity owner or administrator can allow the activity approval after all the authors of activity finish their work.
+      operationId: allowActivityApproval
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/addauthor:
+    post:
+      tags:
+        - Govern
+      summary: Add an author to an activity in an open release
+      description: The user matching the provided name is added to the list of authors.<br>This operation can be done by the activity owner or an administrator.
+      operationId: addActivityAuthor
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: authorName
+          in: query
+          description: the name of the author to add
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/activities/{activityId}/addapprover:
+    post:
+      tags:
+        - Govern
+      summary: Add an approver to an activity in an open release
+      description: The user matching the provided name is added to the list of approvers.<br>This operation can be done by the activity owner or an administrator
+      operationId: addActivityApprover
+      parameters:
+        - name: activityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: approverName
+          in: query
+          description: the name of the approver to add
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/testsuites/{testSuiteId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the test suite
+      operationId: testSuite
+      parameters:
+        - name: testSuiteId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, release, or createSnapshot. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestSuite'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/testreports/{testReportId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the test report
+      operationId: testReport
+      parameters:
+        - name: testReportId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, release, or createSnapshot. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TestReport'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Build
+      summary: Delete a test report
+      operationId: deleteTestReport
+      parameters:
+        - name: testReportId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/snapshots/{snapshotId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the snapshot
+      operationId: snapshot_2
+      parameters:
+        - name: snapshotId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Snapshot'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Manage
+      summary: Delete a snapshot from a decision service
+      operationId: deleteSnapshot
+      parameters:
+        - name: snapshotId
+          in: path
+          description: ID of the snapshot to delete.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/servers:
+    get:
+      tags:
+        - Explore
+      summary: List of the servers that are defined in Decision Center
+      operationId: servers
+      parameters:
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyServer'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageServer'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/repository/metrics:
+    get:
+      tags:
+        - Admin
+      summary: Get repository metrics
+      operationId: metrics
+      parameters:
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Metrics'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}:
+    get:
+      tags:
+        - Explore
+      summary: Get the project with the ID
+      operationId: project
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Project'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/variablesets:
+    get:
+      tags:
+        - Explore
+      summary: List of variableSet in a project
+      operationId: variablesets
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageVariableSet'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/technicalrules:
+    get:
+      tags:
+        - Explore
+      summary: List of technical rules in a project
+      operationId: technicalrules
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageTechnicalRule'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/rules:
+    get:
+      tags:
+        - Explore
+      summary: List of rules in a project
+      operationId: rules
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID . If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: folderId
+          in: query
+          description: The folder ID. If empty, take all the branch folders.
+          required: false
+          schema:
+            type: string
+        - name: withContent
+          in: query
+          description: Provide the content of the rule. If empty, provide no details.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageBaseRule'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/ruleflows:
+    get:
+      tags:
+        - Explore
+      summary: List of ruleflows in a project
+      operationId: ruleflows
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: withImage
+          in: query
+          description: Provide the image of the ruleflow. If empty, provide no image
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageBaseRuleflow'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/queries:
+    get:
+      tags:
+        - Explore
+      summary: List of queries in a project
+      operationId: queries
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageQuery'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/queries/{queryId}/run:
+    get:
+      tags:
+        - Explore
+      summary: List of elements returned by a query
+      operationId: queryRun
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: queryId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageNamedObject'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/operations:
+    get:
+      tags:
+        - Explore
+      summary: List of operations in a project
+      operationId: operations
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID . If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageOperation'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/functions:
+    get:
+      tags:
+        - Explore
+      summary: List of functions in a project
+      operationId: functions
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID . If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageFunction'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/projects/{projectId}/folders:
+    get:
+      tags:
+        - Explore
+      summary: List of folders of a project
+      operationId: folders
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: branchId
+          in: query
+          description: The branch or release ID. If empty, take the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: useDependencies
+          in: query
+          description: Include project dependencies. If empty, include no dependencies.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageRulePackage'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/permissions/export:
+    get:
+      tags:
+        - Admin
+      summary: Export the permissions that are defined for a group to JSON
+      operationId: exportPermissions
+      parameters:
+        - name: group
+          in: query
+          description: Group for which you want the permissions.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/permissions/effective:
+    get:
+      tags:
+        - Admin
+      summary: Retrieve the effective permissions for one or more groups to JSON
+      description: The effective permissions are computed assuming the security is enforced.<br>The returned JSON contains the effective permissions for every available type and feature.<br>This endpoint can be used to find the internal name of a type or feature to write custom JSON-based permissions.
+      operationId: effectivePermissions
+      parameters:
+        - name: groups
+          in: query
+          description: Comma-separated list of groups for which you want the effective permissions.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/dynamicdomains/{decisionServiceId}/list:
+    get:
+      tags:
+        - Admin
+      summary: Get the list of dynamic domains
+      operationId: listDynamicDomains
+      parameters:
+        - name: decisionServiceId
+          in: path
+          description: ID of the decision service
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the branch. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: listAll
+          in: query
+          description: True to return all dynamic domains, False to return only the ones that are not up to date
+          required: false
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDynamicDomain'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/deployments/{deploymentId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the deployment configuration
+      operationId: deploymentConfiguration
+      parameters:
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, release, or createSnapshot. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DeploymentConfiguration'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/deployments/{deploymentId}/download:
+    get:
+      tags:
+        - Build
+      summary: Download the RuleApp archive for the deployment configuration
+      description: If no deployment snapshot name is given, a deployment snapshot is created if the deployment configurationhas the 'snapshotMode' attribute set to 'Always'.<br>If a deployment snapshot name is provided, a deployment snapshot is created with that name if it does not already exist. <br>This deployment snapshot is then used as the basis for building the RuleApp archive.<br>The response body contains the deployment snapshot that is created or used, the list of checking messages, if any, and a byte array of the archive if the <tt>includeArchive</tt> flag is set to false.
+      operationId: download
+      parameters:
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the release, branch, or snapshot to work with. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: deploymentSnapshotName
+          in: query
+          description: Name of the deployment snapshot to create or use
+          required: false
+          schema:
+            type: string
+        - name: includeXOMInArchive
+          in: query
+          description: Includes the XOM in the archive when set to true.
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices:
+    get:
+      tags:
+        - Explore
+      summary: Get the list of decision services
+      operationId: decisionServices
+      parameters:
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDecisionService'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}:
+    get:
+      tags:
+        - Explore
+      summary: Get a decision service by its ID
+      operationId: decisionService
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DecisionService'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/testsuites:
+    get:
+      tags:
+        - Explore
+      summary: List of the test suites for the decision service
+      operationId: testSuites
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, or release. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageTestSuite'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/testreports:
+    get:
+      tags:
+        - Explore
+      summary: List of the test reports for the decision service
+      operationId: testReports
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, or release. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=status:COMPLETED'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageTestReport'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/projects:
+    get:
+      tags:
+        - Explore
+      summary: List of the projects that form the decision service, and the decision service itself
+      operationId: projects
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageProject'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/export:
+    get:
+      tags:
+        - Admin
+      summary: Export a decision service to a compressed file
+      operationId: decisionServiceExport
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the baseline (regular branch, release or snapshot) to export. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/deployments:
+    get:
+      tags:
+        - Explore
+      summary: List of the deployment configurations for the decision service
+      operationId: deploymentConfigurations
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the target branch, activity, or release. If none is specified, it defaults to the 'main' branch.
+          required: false
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageDeploymentConfiguration'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/decisiontables/{decisionTableIds}/export:
+    get:
+      tags:
+        - Manage
+      summary: Export an Excel file from an existing decision table
+      operationId: exportDT
+      parameters:
+        - name: decisionServiceId
+          in: path
+          description: ID of the decision service
+          required: true
+          schema:
+            type: string
+        - name: baselineId
+          in: query
+          description: ID of the branch of the decision table. Defaults to the main branch.
+          required: false
+          schema:
+            type: string
+        - name: decisionTableIds
+          in: path
+          description: Comma-separated list of decision tables IDs you want to export.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/decisionservices/{decisionServiceId}/activities:
+    get:
+      tags:
+        - Explore
+      summary: List of the activities in the decision service
+      operationId: activities
+      parameters:
+        - name: decisionServiceId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: 'A query to filter objects by their properties. Basic (boolean, number and strings) types only. For example: q=name:MyProject'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: Size of the page. If empty, all the elements are returned.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageActivity'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/branches/{branchId}:
+    get:
+      tags:
+        - Explore
+      summary: Details of the branch
+      operationId: branch
+      parameters:
+        - name: branchId
+          in: path
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Branch'
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+    delete:
+      tags:
+        - Manage
+      summary: Delete a branch from a decision service
+      operationId: deleteBranch
+      parameters:
+        - name: branchId
+          in: path
+          description: ID of the branch to delete.
+          required: true
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+  /v1/about:
+    get:
+      tags:
+        - About
+      summary: Get system, product, and database information
+      operationId: about
+      parameters:
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/About'
+  /v1/build/discard.cache:
+    delete:
+      tags:
+        - Manage
+      summary: Discard all the built states of branches, releases, activities, and snapshots
+      description: Discard all the built states for branches, releases, activities, and snapshots, namely in baselines. All baselines are rebuilt from scratch. If you provide a baselineId, only built states for this baseline are discarded.
+      operationId: discardBuildState
+      parameters:
+        - name: baselineId
+          in: query
+          description: The ID of the branch, release, activity or snapshot to clean
+          required: false
+          schema:
+            type: string
+        - in: query
+          $ref: '#/components/parameters/datasource'
+      responses:
+        '200':
+          description: OK
+      security:
+        - Authorization:
+            - global
+        - basic:
+            - global
+components:
+  schemas:
+    About:
+      type: object
+      properties:
+        datasourceName:
+          type: string
+        schemaVersion:
+          type: string
+        version:
+          type: string
+        patchLevel:
+          type: string
+    Activity:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        status:
+          type: string
+          enum:
+            - InProgress
+            - ReadyForApproval
+            - Complete
+            - Canceled
+            - Rejected
+            - Working
+            - Finished
+            - NotReviewed
+            - ApprovedChanges
+            - RejectedChanges
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        approvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+    ActivityInput:
+      required:
+        - name
+        - owner
+        - targetDate
+      type: object
+      properties:
+        name:
+          type: string
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        documentation:
+          type: string
+        approversNames:
+          type: array
+          items:
+            type: string
+        authorsNames:
+          type: array
+          items:
+            type: string
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Summary or human readable code of the error
+        reason:
+          type: string
+          description: Detailed description of the error
+        status:
+          type: string
+          description: 'Http Status string. Eg: NOT_FOUND'
+        ref:
+          type: string
+          description: Internal reference of the error
+        errorCode:
+          type: string
+          description: IBM error code (optional)
+        details:
+          type: array
+          description: Technical details about the error.
+          items:
+            type: string
+            description: Technical details about the error.
+      description: Error object returned by endpoints in the body of the response
+    BaseRule:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+      description: The elements contained in the page
+    BaseRuleflow:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        project:
+          type: string
+        rulePackage:
+          type: string
+        documentation:
+          type: string
+        permaLink:
+          type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleTask'
+      description: The elements contained in the page
+    BaselineInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        uuid:
+          type: string
+        id:
+          type: integer
+          format: int32
+        typeFQN:
+          type: string
+        parentId:
+          type: integer
+          format: int32
+        kind:
+          type: string
+        createdon:
+          type: string
+          format: date-time
+        prjName:
+          type: string
+    Branch:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        main:
+          type: boolean
+          description: Is this the 'main' branch of the Decision Service?
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+      description: A branch, also known as 'unmanaged' branch, as opposed to release or activities
+    ChangeActivity:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        status:
+          type: string
+          enum:
+            - InProgress
+            - ReadyForApproval
+            - Complete
+            - Canceled
+            - Rejected
+            - Working
+            - Finished
+            - NotReviewed
+            - ApprovedChanges
+            - RejectedChanges
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        approvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+    CleanupReport:
+      type: object
+      properties:
+        datasourceName:
+          type: string
+        launchTimestamp:
+          type: string
+          format: date-time
+        cleanupDate:
+          type: string
+          format: date
+        completed:
+          type: boolean
+          default: false
+        stopped:
+          type: boolean
+          default: false
+        dryRun:
+          type: boolean
+          default: false
+        handleReports:
+          type: boolean
+          default: false
+        recyclebinMode:
+          type: boolean
+          default: false
+        eclassFQN:
+          type: string
+        exceptions:
+          type: array
+          items:
+            type: string
+        messages:
+          type: array
+          items:
+            type: string
+        deletedBaselines:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaselineInfo'
+        deletedElt:
+          type: array
+          items:
+            $ref: '#/components/schemas/OldEltInfo'
+        deletedVEltInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/VEltInfo'
+    CleanupReports:
+      type: object
+      example:
+        - datasourceName: jdbc/ilogDataSource
+          launchTimestamp: '2021-01-20T10:30:00'
+          cleanupDate: 2020-Sep-01
+          completed: true
+          stopped: false
+          dryRun: false
+          handleReports: false
+          recyclebinMode: false
+          exceptions: []
+          messages: []
+          deletedBaselines: []
+          deletedElt: []
+          deletedVEltInfo: []
+    CleanupStatus:
+      type: object
+      properties:
+        isRunning:
+          type: boolean
+        cleanupDate:
+          type: string
+          example: 2020-Sep-01
+        eclassFQN:
+          type: string
+    Contributor:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+        fullname:
+          type: string
+    DecisionService:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        advancedProperties:
+          type: string
+      description: The elements contained in the page
+    DeploymentConfiguration:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        production:
+          type: boolean
+        description:
+          type: string
+        ruleAppName:
+          type: string
+        ruleAppVersion:
+          type: string
+        snapshotMode:
+          type: string
+          enum:
+            - Always
+            - Never
+            - UserDefined
+    DeploymentMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        ruleArtifact:
+          $ref: '#/components/schemas/RuleArtifact'
+        severity:
+          type: string
+          enum:
+            - DEBUG
+            - INFO
+            - WARNING
+            - ERROR
+            - SEMANTIC
+      description: The elements contained in the page
+    DeploymentResult:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - STARTING
+            - STARTED
+            - STOPPING
+            - STOPPED
+            - FAILED
+            - COMPLETED
+            - ABORTED
+        ruleAppName:
+          type: string
+          description: The name of the ruleapp created by this deployment
+        messages:
+          $ref: '#/components/schemas/PageDeploymentMessage'
+        snapshot:
+          $ref: '#/components/schemas/DeploymentSnapshot'
+        servers:
+          type: array
+          description: The list of servers this Decision Service was deployed to
+          items:
+            type: string
+            description: The list of servers this Decision Service was deployed to
+        archive:
+          type: string
+          description: The base64 content of the RuleApp archive, if requested by the build or deploy command
+      description: Result returned by a build or deploy operation
+    DeploymentSnapshot:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+      description: A deployment snapshot is a set of project artifacts filtered by a deployment configuration
+    DynamicDomain:
+      type: object
+      properties:
+        domainValueProviderName:
+          type: string
+        bomClassFQN:
+          type: string
+        providerClassName:
+          type: string
+        providerResourceName:
+          type: string
+        projectName:
+          type: string
+      description: The elements contained in the page
+    Function:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        definition:
+          type: string
+        project:
+          type: string
+        rulePackage:
+          type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        documentation:
+          type: string
+        html:
+          type: string
+      description: The elements contained in the page
+    Metrics:
+      type: object
+    NamedObject:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+      description: The elements contained in the page
+    OldEltInfo:
+      type: object
+      properties:
+        eltName:
+          type: string
+        eltId:
+          type: integer
+          format: int32
+        typeFQN:
+          type: string
+        createdon:
+          type: string
+          format: date-time
+        prjName:
+          type: string
+    Operation:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        documentation:
+          type: string
+        extractor:
+          type: string
+        extractorQuery:
+          type: string
+        extractorValidator:
+          type: string
+        rulesetName:
+          type: string
+        project:
+          type: string
+        permaLink:
+          type: string
+        ruleflow:
+          $ref: '#/components/schemas/BaseRuleflow'
+        referencedVariables:
+          type: array
+          items:
+            $ref: '#/components/schemas/OperationVariable'
+      description: The elements contained in the page
+    OperationVariable:
+      required:
+        - bomType
+        - name
+      type: object
+      properties:
+        internalId:
+          type: string
+        name:
+          type: string
+        bomType:
+          type: string
+        type:
+          type: string
+        verbalization:
+          type: string
+        initialValue:
+          type: string
+        direction:
+          type: string
+    PageActivity:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Activity'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageBaseRule:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/BaseRule'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageBaseRuleflow:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/BaseRuleflow'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageBranch:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Branch'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageDecisionService:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/DecisionService'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageDeploymentConfiguration:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/DeploymentConfiguration'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageDeploymentMessage:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/DeploymentMessage'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageDynamicDomain:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/DynamicDomain'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageFunction:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Function'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageNamedObject:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/NamedObject'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageOperation:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Operation'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageProject:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Project'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageQuery:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Query'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageRelease:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Release'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageRulePackage:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/RulePackage'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageServer:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Server'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageServerExt:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/ServerExt'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageSnapshot:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Snapshot'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageTechnicalRule:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/TechnicalRule'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageTestReport:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/TestReport'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageTestSuite:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/TestSuite'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageVariableSet:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/VariableSet'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    PageWebhook:
+      type: object
+      properties:
+        elements:
+          type: array
+          description: The elements contained in the page
+          items:
+            $ref: '#/components/schemas/Webhook'
+        totalCount:
+          type: integer
+          description: Total elements count
+          format: int32
+        number:
+          type: integer
+          description: Current page number. Starts at 0.
+          format: int32
+        size:
+          type: integer
+          description: Number of elements of the current page
+          format: int32
+    Project:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+    Property:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+        label:
+          type: string
+    Query:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        definition:
+          type: string
+        createdBy:
+          type: string
+        createdOn:
+          type: string
+          format: date-time
+        lastChangedBy:
+          type: string
+        html:
+          type: string
+        includeDependencies:
+          type: boolean
+      description: The elements contained in the page
+    Release:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        status:
+          type: string
+          enum:
+            - InProgress
+            - ReadyForApproval
+            - Complete
+            - Canceled
+            - Rejected
+            - Working
+            - Finished
+            - NotReviewed
+            - ApprovedChanges
+            - RejectedChanges
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        approvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        initial:
+          type: boolean
+          description: Is this release the initial one, corresponding to the creation of the Decision Service
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+    ReleaseInput:
+      required:
+        - name
+        - owner
+        - targetDate
+      type: object
+      properties:
+        name:
+          type: string
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        documentation:
+          type: string
+        approversNames:
+          type: array
+          items:
+            type: string
+        parentId:
+          type: string
+    ReportBasicDescription:
+      type: object
+      properties:
+        datasourceName:
+          type: string
+          default: jdbc/ilogDataSource
+        cleanupDate:
+          type: string
+          example: 2020-Sep-01
+        completed:
+          type: boolean
+          default: false
+        stopped:
+          type: boolean
+          default: false
+        dryRun:
+          type: boolean
+          default: false
+        handleReports:
+          type: boolean
+          default: false
+        recyclebinMode:
+          type: boolean
+          default: false
+    RuleArtifact:
+      type: object
+      properties:
+        path:
+          type: string
+        uuid:
+          type: string
+    RulePackage:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        projectName:
+          type: string
+      description: The elements contained in the page
+    RuleTask:
+      type: object
+      properties:
+        name:
+          type: string
+        documentation:
+          type: string
+        finalActions:
+          type: string
+        initialActions:
+          type: string
+        exitCriteria:
+          type: string
+        body:
+          type: string
+        executionMode:
+          type: string
+        ordering:
+          type: string
+    SQLScriptStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Execution status, one of RUNNING, SUCCESS, FAILURE
+          enum:
+            - RUNNING
+            - SUCCESS
+            - FAILURE
+        runningStatement:
+          type: string
+          description: Running statment if any
+        errorMessage:
+          type: string
+          description: Error message if any
+        runningStmt:
+          type: string
+          writeOnly: true
+        errorMsg:
+          type: string
+          writeOnly: true
+      description: Information on SQL script execution
+    Server:
+      required:
+        - kind
+        - name
+        - url
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+          description: The name of the server
+        url:
+          type: string
+          description: The URL of the server
+        description:
+          type: string
+          description: The description of the server
+        loginServer:
+          type: string
+          description: The name of the user allowed to access the server
+        loginPassword:
+          type: string
+          description: The password of the user allowed to access the server
+        kind:
+          type: string
+          description: The type of the server
+          enum:
+            - RES, DECISION_RUNNER
+        authenticationKind:
+          type: string
+          description: The type of authentication used by the server
+          enum:
+            - BASIC_AUTH, OAUTH
+        authenticationProvider:
+          type: string
+          description: The name of the authentication provider to use (for OAUTH authentication kind)
+        groups:
+          type: array
+          description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+          items:
+            type: string
+            description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+    ServerExt:
+      required:
+        - kind
+        - name
+        - url
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+          description: The name of the server
+        url:
+          type: string
+          description: The URL of the server
+        description:
+          type: string
+          description: The description of the server
+        loginServer:
+          type: string
+          description: The name of the user allowed to access the server
+        loginPassword:
+          type: string
+          description: The password of the user allowed to access the server
+        kind:
+          type: string
+          description: The type of the server
+          enum:
+            - RES, DECISION_RUNNER
+        authenticationKind:
+          type: string
+          description: The type of authentication used by the server
+          enum:
+            - BASIC_AUTH, OAUTH
+        authenticationProvider:
+          type: string
+          description: The name of the authentication provider to use (for OAUTH authentication kind)
+        groups:
+          type: array
+          description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+          items:
+            type: string
+            description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+        alternateURL:
+          type: string
+          description: The URL of the server to present to users instead of the value of the property url.<br>If no URL is provided, the value of the property url is set.
+        production:
+          type: boolean
+          description: If true, the server is tagged for production.<br>The property is only consumed by Rule Designer where the production tag is set on servers.On Decision Center, the production tag is set on deployment configurations.
+        builtIn:
+          type: boolean
+          description: If true, the server was created based on a configuration file during the setup of Decision Center.<br>For servers created in Business console or with the dedicated REST API, the property is set to false
+      description: The elements contained in the page
+    ServerPostInput:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the server
+        description:
+          type: string
+          description: The description of the server
+        loginServer:
+          type: string
+          description: The name of the user allowed to access the server
+        loginPassword:
+          type: string
+          description: The password of the user allowed to access the server
+        authenticationKind:
+          type: string
+          description: The type of authentication used by the server
+          enum:
+            - BASIC_AUTH, OAUTH
+        authenticationProvider:
+          type: string
+          description: The name of the authentication provider to use (for OAUTH authentication kind)
+        groups:
+          type: array
+          description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+          items:
+            type: string
+            description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+      description: The JSON representation of a server with values to update
+    ServerPutInput:
+      required:
+        - kind
+        - name
+        - url
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the server
+        url:
+          type: string
+          description: The URL of the server
+        description:
+          type: string
+          description: The description of the server
+        loginServer:
+          type: string
+          description: The name of the user allowed to access the server
+        loginPassword:
+          type: string
+          description: The password of the user allowed to access the server
+        kind:
+          type: string
+          description: The type of the server
+          enum:
+            - RES, DECISION_RUNNER
+        authenticationKind:
+          type: string
+          description: The type of authentication used by the server
+          enum:
+            - BASIC_AUTH, OAUTH
+        authenticationProvider:
+          type: string
+          description: The name of the authentication provider to use (for OAUTH authentication kind)
+        groups:
+          type: array
+          description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+          items:
+            type: string
+            description: A list of groups allowed to use this server. A list with the single element * means all groups are allowed to use this server
+      description: The JSON representation of a server
+    Snapshot:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+    StandardSnapshot:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        initial:
+          type: boolean
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+      description: A 'standard' snapshot reflects the state of a Decision Service at a given point in time
+    TechnicalRule:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        definition:
+          type: string
+        project:
+          type: string
+        rulePackage:
+          type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property'
+        documentation:
+          type: string
+        html:
+          type: string
+      description: The elements contained in the page
+    TestReport:
+      required:
+        - errorMessage
+        - errors
+        - executed
+        - failures
+        - name
+        - scenarios
+        - status
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        scenarios:
+          type: integer
+          description: The number of scenarios in the test report
+          format: int32
+        executed:
+          type: integer
+          description: The number of executed test in the test report, -1 means no test was executed
+          format: int32
+        failures:
+          type: integer
+          description: The number of failures in the test report
+          format: int32
+        errors:
+          type: integer
+          description: The number of errors in the test report
+          format: int32
+        status:
+          type: string
+          description: The status of the test report
+          enum:
+            - STARTING
+            - STARTED
+            - STOPPING
+            - STOPPED
+            - FAILED
+            - COMPLETED
+            - ABORTED
+        errorMessage:
+          type: string
+          description: The error reason of the test report
+    TestSuite:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+    UpdateReleaseInput:
+      required:
+        - name
+        - owner
+        - targetDate
+      type: object
+      properties:
+        name:
+          type: string
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        documentation:
+          type: string
+        approversNames:
+          type: array
+          items:
+            type: string
+    VEltInfo:
+      type: object
+      properties:
+        versionId:
+          type: integer
+          format: int32
+        versDate:
+          type: string
+          format: date-time
+        major:
+          type: integer
+          format: int32
+        minor:
+          type: integer
+          format: int32
+        isDeletionVers:
+          type: boolean
+          default: false
+        uuid:
+          type: string
+        eltOId:
+          type: integer
+          format: int32
+        eltId:
+          type: integer
+          format: int32
+        typeFQN:
+          type: string
+        eltName:
+          type: string
+        prjId:
+          type: integer
+          format: int32
+        projectName:
+          type: string
+        branchId:
+          type: integer
+          format: int32
+        branchName:
+          type: string
+    ValidationActivity:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        parentId:
+          type: string
+        documentation:
+          type: string
+        buildMode:
+          type: string
+          description: 'Represents the type of a rule engine: classic rule engine or decision engine'
+          enum:
+            - DecisionEngine
+            - ClassicEngine
+        status:
+          type: string
+          enum:
+            - InProgress
+            - ReadyForApproval
+            - Complete
+            - Canceled
+            - Rejected
+            - Working
+            - Finished
+            - NotReviewed
+            - ApprovedChanges
+            - RejectedChanges
+        owner:
+          type: string
+        targetDate:
+          type: string
+          format: date-time
+        approvers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        kind:
+          type: string
+          enum:
+            - Branch
+            - Release
+            - ChangeActivity
+            - ValidationActivity
+            - StandardSnapshot
+            - DeploymentSnapshot
+    Variable:
+      required:
+        - bomType
+        - name
+      type: object
+      properties:
+        internalId:
+          type: string
+        name:
+          type: string
+        bomType:
+          type: string
+        type:
+          type: string
+        verbalization:
+          type: string
+        initialValue:
+          type: string
+    VariableSet:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: string
+        internalId:
+          type: string
+        name:
+          type: string
+        variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variable'
+      description: The elements contained in the page
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        authToken:
+          type: string
+  parameters:
+    datasource:
+      name: datasource
+      in: query
+      schema:
+        type: string
+      description: The JNDI name of the Decision Center data source. If not specified, it defaults to jdbc/ilogDataSource
+      required: false
+      allowEmptyValue: false
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+    basic:
+      type: http
+      scheme: basic

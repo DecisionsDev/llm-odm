@@ -1,0 +1,4 @@
+gradio
+langchain
+tiktoken
+openai

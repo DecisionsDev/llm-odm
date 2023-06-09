@@ -1,0 +1,5 @@
+gradio==3.30
+langchain
+tiktoken
+pyspark
+openai
