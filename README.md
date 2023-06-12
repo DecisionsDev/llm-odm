@@ -30,7 +30,7 @@ The instructions to install it can be found in this [directory](chat-with-execut
 
 # Interact with the miniloan decision service
 
-In the first sample, the [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
+In this sample, the [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
 
 The instructions to install it can be found in this [directory](chat-with-loandecisionservice).
 
