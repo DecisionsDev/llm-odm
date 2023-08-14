@@ -1,5 +1,5 @@
 # Introduction
-The integration of the LLM with the Operation Decision Manager product, in collaboration with the Langchain project, represents a game-changing milestone in the realms of language generation, decision management, and data analysis. By combining the advanced language generation capabilities of LLM OpenAI with the robust features of ODM and the integration technology of Langchain, users can unlock a multitude of benefits that significantly enhance their decision-making processes. This integration offers a seamless and comprehensive solution for businesses aiming to harness the power of language generation and analysis, optimize operations, and achieve strategic advantages. 
+The integration of the LLM with the Operation Decision Manager product, in collaboration with the Langchain project, represents a game-changing milestone in the realms of language generation, decision management, and data analysis. By combining the generative capabilities provided by LLMs coming from OpenAI or Watsonx with the robust features of IBM ODM and the integration technology of Langchain, users can unlock a multitude of benefits that significantly enhance their decision-making processes. This integration offers a seamless and comprehensive solution for businesses aiming to harness the power of language generation and analysis, optimize operations, and achieve strategic advantages. 
 
 
 <img src="chat-with-loandecisionservice/images/LangChain.png" width="600px" heigh="400px" />
@@ -30,7 +30,7 @@ The instructions to install it can be found in this [directory](chat-with-execut
 
 # Interact with the miniloan decision service
 
-In the first sample, the [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
+In this sample, the [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
 
 The instructions to install it can be found in this [directory](chat-with-loandecisionservice).
 
