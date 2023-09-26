@@ -35,7 +35,7 @@ The instructions to install it can be found in this [directory](chat-with-loande
 <img src="chat-with-loandecisionservice/images/demo_presentation.gif"  />
 
 
-# Interact with ODM Business console
+# Interact in natural language with your Decision Automation projects in Decision Center
 
 In this sample we leverage Langchain and an LLM to provide a conversational user experience to interrogate and act on the IBM ODM project repository. In this integration we use the Swagger REST API provided by IBM ODM Decision Center. LLM brings natural language processing for understanding and generating text, while LangChain project offers chaining of prompts and the wrapping of any REST API in plain text, put together in the context of a bot conversation. 
 Diving in more details we utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html).
