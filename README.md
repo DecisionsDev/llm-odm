@@ -16,7 +16,7 @@ There are two main value props the LangChain framework provides:
    * Components: LangChain provides modular abstractions for the components neccessary to work with language models. LangChain also has collections of implementations for all these abstractions. The components are designed to be easy to use, regardless of whether you are using the rest of the LangChain framework or not.
    * Use-Case Specific Chains: Chains can be thought of as assembling these components in particular ways in order to best accomplish a particular use case. These are intended to be a higher level interface through which people can easily get started with a specific use case. These chains are also designed to be customizable.
 
-# Interact with an IBM ODM decision service trace.
+# Query an IBM ODM decision service trace in natural language
 
 In this sample we will show you how to query Decision Service data execution traces through natural language. You can select your dataset, express metrics and KPIs in plain text.
 This integration uses the [Spark LangChain integration](https://python.langchain.com/en/latest/modules/agents/toolkits/examples/spark.html?highlight=spark).
@@ -25,7 +25,7 @@ Find the installation instructions at [directory](chat-with-executions-data).
 
 <img src="chat-with-executions-data/images/data-query.gif"  />
 
-# Interact in natural language to invoke a decision service
+# Invoke a decision service in natural language
 
 In this sample we leverage the miniloan decision service provided as a sample in IBM ODM. The [LangChain OpenAPI Chain](https://python.langchain.com/en/latest/modules/chains/examples/api.html) will be used to interact with the "MiniLoan" decision service. Utilizing the Swagger API generated dynamically by the ODM Runtime, this integration will allow for natural language interaction with the ODM product without any changes to the product itself.
 
@@ -35,9 +35,9 @@ The instructions to install it can be found in this [directory](chat-with-loande
 <img src="chat-with-loandecisionservice/images/demo_presentation.gif"  />
 
 
-# Interact in natural language with your Decision Automation projects in Decision Center
+# Govern your Decision Automation projects in natural language
 
-In this sample we leverage Langchain and an LLM to provide a conversational user experience to interrogate and act on the IBM ODM project repository. In this integration we use the Swagger REST API provided by IBM ODM Decision Center. LLM brings natural language processing for understanding and generating text, while LangChain project offers chaining of prompts and the wrapping of any REST API in plain text, put together in the context of a bot conversation. 
+In this sample we aim to bring ODM Decision Center management features into a conversational user experience. We leverage Langchain and an LLM to provide a conversational UX to interrogate and act on the IBM ODM project repository. In this integration we reuse the Swagger REST API provided by IBM ODM Decision Center. The LLM brings natural its language processing for understanding and generating text, while LangChain offers chaining of prompts and the wrapping of any REST API in plain text, put together in the context of a bot conversation. 
 Diving in more details we utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html).
 
 The installation instructions are available in this [directory](chat-with-businessconsole).
