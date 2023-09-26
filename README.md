@@ -23,9 +23,7 @@ This integration uses the [Spark LangChain integration](https://python.langchain
 
 Find the installation instructions at [directory](chat-with-executions-data). 
 
-
 <img src="chat-with-executions-data/images/data-query.gif"  />
-
 
 # Interact in natural language to invoke a decision service
 
