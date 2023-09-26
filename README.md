@@ -37,6 +37,6 @@ The instructions to install it can be found in this [directory](chat-with-loande
 
 # Interact with ODM Business console
 
-The integration of the Swagger REST API of the ODM Business Console with the LangChain project offers a unique opportunity to combine the strengths of decision management and LLM technology. In this project, we will utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html). This API acts as a natural language to REST API call converter, making it possible for the ODM Business Console to access the advanced language learning technologies of the LangChain project.
+The integration of the Swagger REST API of the IBM ODM Business Console with the LangChain project offers a unique opportunity to combine the strengths of decision management and LLM technology. In this project, we will utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html). This API acts as a natural language to REST API call converter, making it possible for the ODM Business Console to access the advanced language learning technologies of the LangChain project.
 
 The instructions to install it can be found in this [directory](chat-with-businessconsole).
