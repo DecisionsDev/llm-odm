@@ -4,7 +4,7 @@ The integration of GenAI with the IBM Operation Decision Manager product, in col
 <img src="chat-with-loandecisionservice/images/LangChain.png" width="600px" heigh="400px" />
 
 ## LangChain
-[LangChain](https://python.langchain.com/en/latest/) is a framework for developing applications powered by language models. The most powerful and differentiated applications will not only call out to a language model via an api, but will also:
+[LangChain](https://python.langchain.com/en/latest/) is a framework for developing applications powered by Large Language Models. The most powerful and differentiated applications will not only call out to a language model via an api, but will also:
 
   * Be data-aware: connect a language model to other sources of data
   * Be agentic: Allow a language model to interact with its environment
