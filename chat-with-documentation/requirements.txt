@@ -1,0 +1,8 @@
+streamlit
+langchain
+chromadb
+markdown
+pypdf
+gpt4all
+beautifulsoup4
+lxml
