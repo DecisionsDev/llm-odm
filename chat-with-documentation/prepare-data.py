@@ -10,22 +10,7 @@ DOC_DIR="./docs"
 DATA_DIR="./data"
 def indexMarkdown(file):
     OUT_FILE="output.html"
-    print("Found file : "+os.path.abspath(file)+" - Processing as markdown file")
-    with open(file, "r", encoding="utf-8") as input_file:
-        content = input_file.read()
-        html = markdown.markdown(content)
-        with open(OUT_FILE, "w", encoding="utf-8", errors="xmlcharrefreplace") as output_file:
-            output_file.write(html)
-        loader = BSHTMLLoader(OUT_FILE)
-        raw_document = loader.load()
-        os.remove(OUT_FILE)
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200,
-        )
-        #m = {}
-        #m["title"] = get_document_title(raw_document[0])
-        #m["version"] = "8.12.0"
+  12.0"
         #raw_document[0].metadata = raw_document[0].metadata | m
         #raw_document[0].metadata["source"] = str(raw_document[0].metadata["source"])
         #    docs = docs + raw_document
@@ -55,9 +40,7 @@ for item in desktop.rglob("**/*"):
         if(file_extension==".md"):
             indexMarkdown(item)
         elif(file_extension==".pdf"):
-            #indexPDF(os.path.abspath(item))
-            print("ff")
-
+            indexPDF(os.path.abspath(item))
 
 
 

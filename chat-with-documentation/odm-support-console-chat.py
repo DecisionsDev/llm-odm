@@ -1,11 +1,8 @@
 
 from langchain.embeddings import GPT4AllEmbeddings
-
 from langchain.vectorstores import Chroma
 # LLM
 from langchain.llms import Ollama
-
-
 from langchain.vectorstores import FAISS
 from langchain.document_loaders import PyPDFLoader
 from langchain import PromptTemplate
@@ -20,9 +17,11 @@ vectordb = Chroma(persist_directory="./data", embedding_function=GPT4AllEmbeddin
 
 question="how to configure decision center datasource?"
 # Prompt
-template = """Use the following pieces of context to answer the question at the end. 
+template = """
+Use the following pieces of context to answer the question at the end. 
+You are an expert of the Operational Decision Manager (ODM).
 If you don't know the answer, just say that you don't know, don't try to make up an answer. 
-Use three sentences maximum and keep the answer as concise as possible. 
+
 {context}
 Question: {question}
 Helpful Answer:"""
@@ -31,7 +30,7 @@ QA_CHAIN_PROMPT = PromptTemplate(
     template=template,
 )
 
-
+chain_type_kwargs = {"prompt": QA_CHAIN_PROMPT}
 llm = Ollama(base_url="http://localhost:11434",
              model="mistral",
              verbose=False)
@@ -40,7 +39,11 @@ llm = Ollama(base_url="http://localhost:11434",
 from langchain.chains import RetrievalQA
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-qa_chain = ConversationalRetrievalChain.from_llm(llm, vectordb.as_retriever(), memory=memory)
+qa_chain = ConversationalRetrievalChain.from_llm(llm, vectordb.as_retriever(),chain_type="stuff",combine_docs_chain_kwargs={
+                                     "prompt": QA_CHAIN_PROMPT
+                                 },
+                                                
+                                                 memory=memory)
 
 
 
