@@ -52,8 +52,9 @@ python3 odm-support-console-chat.py
 ```
 
 Here is some questions you can ask to the ODM documentation chat bot:
-```
-- Prompt: What is the step to configure ODM with Azure AD ?
+
+```text
+- Prompt: What is the steps to configure ODM with Azure AD ?
 
 Answer:
 To configure ODM with Azure AD, you need to create several secrets before installing the ODM instance and using web application single sign-on (SSO). The following steps should be followed:
