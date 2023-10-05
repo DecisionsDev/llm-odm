@@ -1,5 +1,5 @@
 ## Introduction 
-
+In this sample, we will demonstrate how to use a Language Model Large (LLM) installed on a desktop machine in conjunction with the Langchain project to chat with a product documentation. This guide will show you step-by-step instructions and provide helpful tips to ensure a successful installation and set up.
 
 ## Pre-requisites
   * Python 3.8 or higher
@@ -52,7 +52,7 @@ python3 odm-support-console-chat.py
 ```
 
 Here is some questions you can ask to the ODM documentation chat bot:
-
+```
 - Prompt: What is the step to configure ODM with Azure AD ?
 
 Answer:
@@ -81,3 +81,4 @@ Creating an Azure AD tenant is the first step in configuring the Operational Dec
 8. Once the Azure AD tenant is created and configured, you can proceed with creating the secrets required for installing the ODM instance and configuring it to use Azure AD as the external OIDC provider.
 
 ....
+```
