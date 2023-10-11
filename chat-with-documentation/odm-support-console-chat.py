@@ -15,7 +15,6 @@ from langchain.document_loaders import DirectoryLoader
 vectordb = Chroma(persist_directory="./data", embedding_function=GPT4AllEmbeddings())
 
 
-question="how to configure decision center datasource?"
 # Prompt
 template = """
 Use the following pieces of context to answer the question at the end. 
@@ -44,10 +43,6 @@ qa_chain = ConversationalRetrievalChain.from_llm(llm, vectordb.as_retriever(),ch
                                  },
                                                 
                                                  memory=memory)
-
-
-
-
 
 yellow = "\033[0;33m"
 green = "\033[0;32m"
