@@ -67,8 +67,7 @@ Open a new terminal
 python3 app-support.py
 ```
 
-![Console with ODM Documentation](images/chatwithodmdoc.gif)
-
+Then open a browser to this url : http://127.0.0.1:7860
 
 Here is some questions you can ask to the ODM documentation chat bot:
 
@@ -83,6 +82,6 @@ Step1 ....
 ....
 ```
 
+![Console with ODM Documentation](images/chatwithodmdoc.gif)
 
 
-![Chat with the ODM Documentation](images/chatwithodmdoc.gif)
