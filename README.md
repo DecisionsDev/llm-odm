@@ -41,3 +41,10 @@ In this sample we aim to bring ODM Decision Center management features into a co
 Diving in more details we utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html).
 
 The installation instructions are available in this [directory](chat-with-businessconsole).
+
+# Building an Interactive Chat Bot for ODM Product Installation and Usage
+
+In the fast-paced world of technology and business, staying up-to-date with complex software like IBM's Operational Decision Management (ODM) can be a challenging task. To simplify this process and provide a user-friendly experience, we present a code sample that demonstrates the development of an interactive chat bot powered by LangChain, utilizing vector and RAG architecture.
+This chat bot aims to facilitate the exploration and understanding of ODM by indexing its documentation and offering real-time assistance, all within the convenience of your local desktop, including the Apple Mac M1.
+
+The installation instructions are available in this [directory](chat-with-documentation).
