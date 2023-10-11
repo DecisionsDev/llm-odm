@@ -45,7 +45,7 @@ Then open a browser to this url : http://127.0.0.1:7860
 
 Here some questions you can ask :  
   * what is the ODM system patch level?
-  * give me the list of decision services name
+  * Give me the list of decision service names
 
 
 ![Chat with the Business console](images/Chat.png)

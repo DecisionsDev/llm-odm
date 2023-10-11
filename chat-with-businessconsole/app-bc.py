@@ -91,7 +91,7 @@ title = """
     <p style="text-align: center;">This sample allow to interact with the Business console. 
     Here some questions you can ask to the ODM chat system:
     <li>what is the ODM system patch level?</li>
-    <li>give me the list of decision services name</li>
+    <li>Give me the list of decision service names</li>
     </p>
  </div>
 """

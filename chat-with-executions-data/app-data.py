@@ -92,9 +92,9 @@ title = """
     <h1>Decision Automation Chat</h1>
     <p style="text-align: center;">This sample allow to interact with the Loan Decision Service. 
     Here some questions you can ask to the Decision chat system:
-    <li>as an end user describe me the format of the dataset from the column name</li>
-    <li>what is the number of the rejected loan applications ?</li>
-    <li>what is the sum of the accepted loans amount ?</li>
+    <li>As an end user, please describe the format of the dataset based on the column name.</li>
+    <li>What is the number of rejected loan applications?</li>
+    <li>What is the sum of the accepted loan amounts?</li>
     </p>
  </div>
 """

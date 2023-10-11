@@ -36,8 +36,8 @@ python3 app-loan.py
 Then open a browser to this url : http://127.0.0.1:7860
 
 Then you can ask queston to the chat bot such as:
-   * my name is joe, i want to do a loan of an amount of 100000 with a credit score of 210 with a duration of 100 is it possible?
-   * Will it be possible to contract a loan of an amount of 100000 with a credit score of 210 during 10 year ?
+   * My name is Joe. I want to apply for a loan of $100,000 with a credit score of 210 and a duration of 100. Is it possible?
+   * Will it be possible to secure a loan of $100,000 with a credit score of 210 for a period of 10 years?
 
 
 ### Code explain

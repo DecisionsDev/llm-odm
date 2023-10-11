@@ -31,9 +31,8 @@ python3 app-loan.py
 Then open a browser to this url : http://127.0.0.1:7860
 
 Then you can ask queston to the chat bot such as:
-  * As an end user describe me the format of the dataset from the column name
-  * what is the number of the rejected loan applications ?
-  * What is the sum of the accepted loans amount ?
+  * What is the number of rejected loan applications?
+  * What is the sum of the accepted loan amounts?
 
 ### Code explain
 This code is agnostic of the data format. Spark allow to infer the schema data that allow to make the query.
