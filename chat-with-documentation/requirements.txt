@@ -6,3 +6,4 @@ pypdf
 gpt4all
 beautifulsoup4
 lxml
+gradio
