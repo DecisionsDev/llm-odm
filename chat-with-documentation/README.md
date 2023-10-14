@@ -43,7 +43,7 @@ For a complete list of supported models and model variants, see the [Ollama mode
 From command line, fetch the mistra model.
 ```ollama pull mistral```
 
-When the app is running, all models are automatically served on [localhost:11434](https:localhost:11434)
+When the app is running, all models are automatically served on [localhost:11434](https://localhost:11434)
 
 ### Prepare your data
 
