@@ -38,7 +38,7 @@ It optimizes setup and configuration details, including GPU usage.
 
 1. [Download and run](https://ollama.ai/download) the app
 2. Once Ollma is up and running, you should download a model. For this sample we will used Mistra model.
-For a complete list of supported models and model variants, see the [Ollama model library](https://ollama.ai/library).
+For a complete list of supported models and model variants, see the [Ollama model library](http://ollama.ai/library).
 
 From command line, fetch the mistra model.
 ```ollama pull mistral```
