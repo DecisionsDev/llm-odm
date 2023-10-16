@@ -1,4 +1,5 @@
 import gradio as gr
+import os
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.vectorstores import Chroma
 # LLM
@@ -106,11 +107,11 @@ title = """
  </div>
 """
 chat_history = []
-
+print (os.path.abspath("images"))
 with gr.Blocks(css=css) as demo:
     with gr.Column(elem_id="col-container"):
         gr.HTML(title)
-        chatbot = gr.Chatbot([], show_label=True,label="Chatbot Output",elem_id="chatbot",visible=True,show_copy_button=True)
+        chatbot = gr.Chatbot([], show_label=True,label="Chatbot Output",elem_id="chatbot",visible=True,show_copy_button=True,avatar_images=( "images/user.png", "images/support.png"))
         question = gr.Textbox(label="Question", placeholder="Type your question and hit Enter ")
         submit_btn = gr.Button("Send message")
 
