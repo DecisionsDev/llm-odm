@@ -49,7 +49,7 @@ When the app is running, all models are automatically served on [localhost:11434
 
 In the doc directory put any ODM documentation that you want to chat with:
 ```shell
-cd doc
+cd docs
 git clone https://github.com/DecisionsDev/odm-docker-kubernetes
 wget --no-check-certificat https://www.ibm.com/docs/en/SSQP76_8.12.0/pdf/odm-8.12.0-documentation.pdf
 ..
