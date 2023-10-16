@@ -82,8 +82,15 @@ def infer(question):
 
     return response['output']
 
-css="""
+#css="""
 #col-container { margin-left: auto; margin-right: auto;}
+#"""
+
+css ="""
+.contain { display: flex; flex-direction: column; }
+.gradio-container { height: 100vh !important; }
+#component-0 { height: 100%; }
+#chatbot { flex-grow: 1; overflow: auto;}
 """
 
 title = """
@@ -94,6 +101,7 @@ title = """
     <li>What are the steps to configure ODM with AWS EKS?</li>
     <li>give me more details on step 1</li>
     <li>Can ODM be installed on an iPhone?</li>
+    <li>Give me an example of Decision Table that ODM can handle</li>
     </p>
  </div>
 """
@@ -102,11 +110,9 @@ chat_history = []
 with gr.Blocks(css=css) as demo:
     with gr.Column(elem_id="col-container"):
         gr.HTML(title)
-        chatbot = gr.Chatbot([], show_label=True,label="Chatbot Output",elem_id="chatbot",visible=True)
+        chatbot = gr.Chatbot([], show_label=True,label="Chatbot Output",elem_id="chatbot",visible=True,show_copy_button=True)
         question = gr.Textbox(label="Question", placeholder="Type your question and hit Enter ")
         submit_btn = gr.Button("Send message")
-        check= gr.Checkbox(label="Display Request", info="Show request call")
-        check.change(fn=show_text, inputs=[check], outputs=[])
 
     question.submit(add_text, [chatbot, question], [chatbot, question]).then(
         bot, chatbot, chatbot
@@ -117,3 +123,4 @@ with gr.Blocks(css=css) as demo:
     )
 
 demo.launch()
+
