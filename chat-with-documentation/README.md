@@ -25,7 +25,7 @@ By this way, we are able to augment the LLM model with the ODM documentation.
 ### Create a virtual env and install the Python package
 ```shell
 python3 -m venv ~/llmchatwithdoc
-~/llmchatwithdoc/bin/activate
+source ~/llmchatwithdoc/bin/activate
 pip install -r requirements.txt
 ```
 
