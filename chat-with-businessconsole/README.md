@@ -18,7 +18,7 @@ In conclusion, the integration of the Swagger REST API of the ODM Business Conso
 ### Create a virtual env and install the Python package
 ```shell
 python3 -m venv ~/llmdc
-~/llmdc/bin/activate
+source ~/llmdc/bin/activate
 pip install -r requirements.txt
 ```
 
