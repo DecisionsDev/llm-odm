@@ -48,7 +48,7 @@ Here some questions you can ask :
   * Give me the list of decision service names
 
 
-![Chat with the Business console](images/Chat.png)
+![Chat with the Business console](images/Chat.jpg)
 
-![Console with Business console](images/Console.png)
+![Console with Business console](images/Console.jpg)
 

@@ -36,7 +36,7 @@ def loadDecisionCenterAPI():
     return decisioncenter_api_spec
 
 def initializeLLMAgent(decisioncenter_api_spec):
-    llm = OpenAI() # Load a Language Model
+    llm = OpenAI(model_name='gpt-4') # Load a Language Model
     message = "odmAdmin:"+os.environ["ODM_ADMIN_PASSWORD"]
     message_bytes = message.encode('ascii')
     base64_bytes = base64.b64encode(message_bytes)
@@ -82,25 +82,38 @@ def infer(question):
     return response
 
 css="""
-#col-container {max-width: 700px; margin-left: auto; margin-right: auto;}
+#col-container {max-width: 700px; auto; margin-right: auto;}
+
+
+    #resources{
+      background-color: rgb(30, 58, 75);
+      margin: 1000px 10 10 10;
+
+    }
+    #resources h3{
+      color: white;
+      font-size: 2rem;
+      font-weight: lighter;
+      margin: 10px;
+      text-align: left;
+    }
+
+  
 """
 
 title = """
-<div style="text-align: center;max-width: 700px;">
-    <h1>Chat with ODM</h1>
-    <p style="text-align: center;">This sample allow to interact with the Business console. 
-    Here some questions you can ask to the ODM chat system:
-    <li>what is the ODM system patch level?</li>
-    <li>Give me the list of decision service names</li>
-    </p>
- </div>
+        <div id="resources">
+        <h3>&nbsp;Business Console Assistant</h3>
+        </div>
+
 """
 
 with gr.Blocks(css=css) as demo:
     with gr.Column(elem_id="col-container"):
         gr.HTML(title)
-        
-        chatbot = gr.Chatbot([], elem_id="chatbot").style(height=350)
+ 
+#        chatbot = gr.Chatbot([], elem_id="chatbot").style(height=350)
+        chatbot = gr.Chatbot([], show_label=True,label="Chatbot Output",elem_id="chatbot",visible=True,show_copy_button=True,avatar_images=( "./images/user.png", "./images/support.png"))
         question = gr.Textbox(label="Question", placeholder="Type your question and hit Enter ")
         submit_btn = gr.Button("Send message")
     #load_pdf.click(loading_pdf, None, langchain_status, queue=False)    
