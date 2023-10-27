@@ -1,0 +1,6 @@
+
+langchain
+camelot-py[cv]
+opencv-python
+pypdf
+PyPDF2==2.12.1
