@@ -43,6 +43,7 @@ This integration uses the [Spark LangChain integration](https://python.langchain
 Find the installation instructions at [directory](chat-with-executions-data). 
 
 <img src="chat-with-executions-data/images/data-query.gif"  />
+
 # Building an Interactive Chat Bot for ODM Product Installation and Usage
 
 In the fast-paced world of technology and business, staying up-to-date with complex software like IBM's Operational Decision Management (ODM) can be a challenging task. To simplify this process and provide a user-friendly experience, we present a code sample that demonstrates the development of an interactive chat bot powered by LangChain, utilizing vector and RAG architecture.
