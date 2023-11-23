@@ -34,8 +34,8 @@ Then you can ask queston to the chat bot such as:
   * What is the number of rejected loan applications?
   * What is the sum of the accepted loan amounts?
 
-### Code explain
-This code is agnostic of the data format. Spark allow to infer the schema data that allow to make the query.
+### Code explained
+This code is agnostic of the data format. Spark allows to infer the data schema necessary to run the query.
 
 
 1. Read a CSV File that contains 
