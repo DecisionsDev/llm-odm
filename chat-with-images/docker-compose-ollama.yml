@@ -1,0 +1,13 @@
+services:
+  ollama:
+    image: ollama
+    hostname: ollama
+    container_name: ollama
+    ports:
+      - 11434:11434
+  ollamasetup:
+    image: ollama
+    depends_on:
+      - ollama
+    restart: "no"
+    entrypoint: [ "bash", "-c", "ollama pull bakllava"]      

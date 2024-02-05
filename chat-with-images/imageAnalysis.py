@@ -3,10 +3,11 @@ from langchain_community.llms import Ollama
 import base64
 from io import BytesIO
 from PIL import Image
-
+import json, os
 class ImageAnalysis:
-    def __init__(self, model_name="llava"):
-        self.bakllava = Ollama(model=model_name)
+    def __init__(self, server_url, model_name="llava"):
+        print("Using Ollma Server: "+str(server_url))
+        self.bakllava = Ollama(base_url=server_url,model=model_name)
 
     @staticmethod
     def convert_to_base64(pil_image):
@@ -19,14 +20,66 @@ class ImageAnalysis:
         pil_image.save(buffered, format="JPEG")
         return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-    def analyze_image(self, file_path, question):
+    def analyze_criteria_image(self, file_path, question):
         """
         Analyzes an image and returns the LLM's response.
         :param file_path: Path to the image file
         :return: LLM's response
         """
-        pil_image = Image.open(file_path)
+
+        # Extracting the file path from the tuple
+        filename = file_path[0]
+
+        # Using os.path.basename to extract the file name
+#        image_name = os.path.basename(file_path)
+#        print("DEBUG "+image_name)
+        pil_image = Image.open(filename)
         image_b64 = self.convert_to_base64(pil_image)
         llm_with_image_context = self.bakllava.bind(images=[image_b64])
         return llm_with_image_context.invoke(question)
 
+    def analyze_image(self, file_path):
+        """
+        Analyzes an image and returns the LLM's response.
+        :param file_path: Path to the image file
+        :return: LLM's response
+        """
+        prompt ="""Extract the following information: hair color, age, skin color and gender. """
+        prompt+="""Format the results in JSON text, ensuring to include the fields \"hairColor\", \"age\", \"skinColor\" and \"gender\". """
+        prompt+="""The expected result characteristics are: """
+        prompt+="""The results must be accurate and reliable."""
+        prompt+="""Gender values should Male or Female. """
+        prompt+="""age should be a number. """
+        prompt+="""skinColor should be one of this values Dark, Ebony, Ivory, Light, Medium or Unknown """
+        prompt+="""hairColor should be one of this values  Black, Blonde, Brown, Gray, Red, White or Unknown. """
+        result = self.analyze_criteria_image(file_path,prompt)
+        
+        print(result)
+        print("-----------------")
+#        age= self.analyze_criteria_image(file_path,"what is the age  ? Reply only the age")
+#        skin = self.analyze_criteria_image(file_path,"what is the color of skin  ? Reply only Clear or Medium or Dark ")
+#        gender = self.analyze_criteria_image(file_path,"Is it a woman or a man  ? Reply only by Woman or Man")
+#        return dict(hair_color=hair_color,age=age,skin=skin,gender=gender)        
+#        age=32
+#        skin="Clear"
+#        gender="Female"
+        return dict(extractedPictureElements=json.loads(result))
+
+    def fake_analyse(self, file_path):
+        """
+        Analyzes an image and returns the LLM's response.
+        :param file_path: Path to the image file
+        :return: LLM's response
+        """
+#        hair_color = self.analyze_criteria_image(file_path,"what is the hair color ? Reply only the color")
+
+#        age= self.analyze_criteria_image(file_path,"what is the age  ? Reply only the age")
+
+#        skin = self.analyze_criteria_image(file_path,"what is the color of skin  ? Reply only Clear or Medium or Dark ")
+
+#        gender = self.analyze_criteria_image(file_path,"Is it a woman or a man  ? Reply only by Woman or Man")
+        hair_color="Brown"
+        age=32
+        skin="Clear"
+        gender="Female"
+        return dict(extractedPictureElements=dict(hairColor=hair_color,age=age,skinColor=skin,gender=gender))
