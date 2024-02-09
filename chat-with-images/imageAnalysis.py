@@ -3,9 +3,9 @@ from langchain_community.llms import Ollama
 import base64
 from io import BytesIO
 from PIL import Image
-import json, os
+import json, os, re
 class ImageAnalysis:
-    def __init__(self, server_url, model_name="llava"):
+    def __init__(self, server_url, model_name="llava:v1.6"):
         print("Using Ollma Server: "+str(server_url))
         self.bakllava = Ollama(base_url=server_url,model=model_name)
 
@@ -52,10 +52,20 @@ class ImageAnalysis:
         prompt+="""age should be a number. """
         prompt+="""skinColor should be one of this values Dark, Ebony, Ivory, Light, Medium or Unknown """
         prompt+="""hairColor should be one of this values  Black, Blonde, Brown, Gray, Red, White or Unknown. """
-        result = self.analyze_criteria_image(file_path,prompt)
-        
-        print(result)
-        print("-----------------")
+
+        resultllm = self.analyze_criteria_image(file_path,prompt)
+  
+        # Utilisation d'une expression régulière pour trouver tout ce qui est entre {}
+        match = re.search(r'\{(.*?)\}', resultllm, re.DOTALL)
+        result=resultllm
+
+        if match:
+            # Extraction et affichage du premier élément entre accolades
+            result = "{"+match.group(1)+"}"
+            print(result)
+        else:
+            print("Aucun contenu trouvé entre accolades.")
+        print("Final Result from LLM : "+result)
 #        age= self.analyze_criteria_image(file_path,"what is the age  ? Reply only the age")
 #        skin = self.analyze_criteria_image(file_path,"what is the color of skin  ? Reply only Clear or Medium or Dark ")
 #        gender = self.analyze_criteria_image(file_path,"Is it a woman or a man  ? Reply only by Woman or Man")
@@ -78,8 +88,8 @@ class ImageAnalysis:
 #        skin = self.analyze_criteria_image(file_path,"what is the color of skin  ? Reply only Clear or Medium or Dark ")
 
 #        gender = self.analyze_criteria_image(file_path,"Is it a woman or a man  ? Reply only by Woman or Man")
-        hair_color="Brown"
-        age=32
-        skin="Clear"
+        hair_color="Red"
+        age=5
+        skin="Light"
         gender="Female"
         return dict(extractedPictureElements=dict(hairColor=hair_color,age=age,skinColor=skin,gender=gender))

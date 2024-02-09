@@ -22,21 +22,23 @@ class InvokeRuleServer:
         self.checkODMServer()
         
     def invokeRules(self,extractedPictureElements):
-        print(extractedPictureElements)
         # Effectuer la requête POST avec authentification Basic
-        rulesetPath="/deployment/operation"
+        rulesetPath="/marketing/advertisement_advisor"
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         params=dict(extractedPictureElements['extractedPictureElements'])
-        response = requests.post(self.odm_server_url+'/DecisionService/rest'+rulesetPath, headers=headers,
-                                 json=extractedPictureElements, auth=HTTPBasicAuth(self.username, self.password))
+        try:
+            response = requests.post(self.odm_server_url+'/DecisionService/rest'+rulesetPath, headers=headers,
+                                    json=extractedPictureElements, auth=HTTPBasicAuth(self.username, self.password))
 
-        # Vérifier la réponse
-        if response.status_code == 200:
-            print("Requête réussie.")
-            return response.json()
-            #return "```\n"+str(json.dumps(response.json(), indent=2))+"\n```"
-        else:
-            print(f"Erreur de requête, code de statut: {response.status_code}")
+            # Vérifier la réponse
+            if response.status_code == 200:
+                return response.json()
+                #return "```\n"+str(json.dumps(response.json(), indent=2))+"\n```"
+            else:
+                print(f"Erreur de requête, code de statut: {response.status_code}")
+        except requests.exceptions.RequestException as e:  # Cette ligne capture les erreurs liées aux requêtes
+            return {"error": "An error occured when inovking the Decision Service. "}
+    
 
 
     def checkODMServer(self):

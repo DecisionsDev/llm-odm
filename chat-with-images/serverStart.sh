@@ -13,7 +13,7 @@ fi
 result=$(curl -o /dev/null -s -w "%{http_code}" $ODM_SERVER_URL/res/api/v1/ruleapps -u odmAdmin:odmAdmin -q | grep -q ^200 && echo 0 || echo 1)
 if [[ $result -eq 0 ]]; then
 
-  deployed=$(curl -X POST --data-binary @data/ruleAppAdvertizing.jar $ODM_SERVER_URL/res/api/v1/ruleapps -H "Content-Type: application/octet-stream" -u odmAdmin:odmAdmin -s)
+  deployed=$(curl -X POST --data-binary @data/ruleAppsMarketing.jar $ODM_SERVER_URL/res/api/v1/ruleapps -H "Content-Type: application/octet-stream" -u odmAdmin:odmAdmin -s)
 
   isDeployed=$(echo "$deployed" | grep -q "succeeded>true</succeeded")
   if [[ $isDeployed -eq 0 ]]; then

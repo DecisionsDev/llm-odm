@@ -8,7 +8,6 @@ services:
       - LICENSE=accept
       - SAMPLE=tue
     healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:9060/decisioncenter/healthCheck?dontCheckDecisionModel=true", "-o", "/dev/null","-s", "-w", "%{http_code}",]
       test: curl -k -f http://localhost:9060/res/login.jsf || exit 1
       interval: 5s
       timeout: 10s
@@ -31,11 +30,3 @@ services:
       - 7860:7860
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-networks:
-  default:
-    ipam:
-      driver: default
-      config:
-      - subnet: 172.20.0.0/16
-        gateway: 172.20.0.1

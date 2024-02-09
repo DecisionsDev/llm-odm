@@ -54,7 +54,7 @@ def displayBotMessage(history, message, raz):
     if raz == True: history[-1][1] = ""
     for character in message:
         history[-1][1] += character
-        time.sleep(0.01)
+        #time.sleep(0.01)
         yield history
 
 def formatImageAnalysis(rulesParameters):
@@ -69,41 +69,51 @@ def format_to_markdown(data):
     markdown_text = ""
     friendlyName={
                   "tailoredProductNames":"Shop",
-                  "tailoredMessaging":"Recommandations",
+                  "tailoredMessaging":"Recommandations ",
                   "tailoredProducts":"Product suggestion",
-                  "tailoredChannels":"Channel"
+                  "tailoredChannels":"Channel",
+                  "discount":"Discount"
                   }
     for key, items in data.items():
-        # Ajout du titre avec la clé
-        if len(items) != 0:
-            title=  friendlyName.get(key, key)  # Utilise la clé elle-même comme titre par défaut
-            markdown_text += f"### {title}\n"
+        title=  friendlyName.get(key, key)  # Utilise la clé elle-même comme titre par défaut
+        if hasattr(items, "__len__") and len(items) != 0:
             # Ajout de chaque élément de la liste comme point de puce
+            markdown_text += f"### {title}\n"
             for item in items:
-                markdown_text += f"- {item}\n"
-
+                if(key == "tailoredProductNames"):
+                    item="<img src=\"file/data/shop/"+item+"\"/>"
+                    markdown_text += f"{item}\n"
+                else: 
+                    markdown_text += f"- {item}\n"
             # Ajout d'un saut de ligne entre les sections pour une meilleure lisibilité
             markdown_text += "\n"
+        else:
+            if(key == "discount") and items > 0.0:                 
+                title=  friendlyName.get(key, key)  # Utilise la clé elle-même comme titre par défaut
+                markdown_text += f"### **{title} : <span style=\"color:blue\">{items} %</span>**"
+
+        
+
     return markdown_text
 
 def formatDecisionResponse(message):
+    if "error" in message:
+        return message['error']
     params=message['adProposal']
-    print(str(params))
     return format_to_markdown(params)
 
 
 
 def bot(history):
-    print("HISTORY:"+str(history[-1]))
     image=history[-1][0]
 
     for updated_history in displayBotMessage(history, "**Analyse pitcture with LLM**</br>",True): yield updated_history
+#    rulesParameters=image_analysis.fake_analyse(image)
     rulesParameters=image_analysis.analyze_image(image)
     for updated_history in displayBotMessage(history, formatImageAnalysis(rulesParameters),False): yield updated_history
     for updated_history in displayBotMessage(history, "\n\n**Compute Recommandation with Decision Engine**\n",False): yield updated_history
     decisionResponse = rule_server.invokeRules(rulesParameters)
     for updated_history in displayBotMessage(history, formatDecisionResponse(decisionResponse),False): yield updated_history
-
 
 # Récupère les chemins des images pour la galerie
 image_paths = [os.path.join(image_folder, file) for file in os.listdir(image_folder) if file.endswith(('png', 'jpg', 'jpeg'))]
@@ -132,5 +142,5 @@ with gr.Blocks() as demo:
 
 demo.queue()
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0")
+    demo.launch(allowed_paths=["./data/shop"], server_name="0.0.0.0")
 
