@@ -34,21 +34,32 @@ It optimizes setup and configuration details, including GPU usage.
 1. [Download and run](https://ollama.ai/download) the app
 2. Once Ollma is up and running, you should download a model. For this sample we will used Mistra model.
 For a complete list of supported models and model variants, see the [Ollama model library](http://ollama.ai/library).
-
-From command line, fetch the mistra model.
-```ollama pull llava:v1.6```
+3. From command line, fetch the mistra model.
+   
+```shell
+ollama pull llava:v1.6
+```
 
 When the app is running, all models are automatically served on [localhost:11434](http://localhost:11434)
 
 
 ### Run the images application
 
-Open a new terminal
+1. Open a new terminal
+2. Build the docker demonstration 
 ```shell
-docker-compose build && docker-compose up
+docker-compose build
 ```
-wait a couple of minutes until you see this message  ```Running on local URL:  http://0.0.0.0:7860```
-Then open a browser to this url : http://localhost:7860
+Once the build is finished.
+
+3. Run the demonstration
+```shell
+docker-compose up
+```
+This will run the ODM for Developpers docker images in conjonction with the sample web application.
+
+4. Wait a couple of minutes until you see this message  ```Running on local URL:  http://0.0.0.0:7860```
+5. Then open a browser to this url : http://localhost:7860
 
 and select , upload and take a photo then click the ```Analyse Image``` button.
 
