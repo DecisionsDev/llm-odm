@@ -161,5 +161,5 @@ with gr.Blocks() as demo:
 
 demo.queue()
 if __name__ == "__main__":
-    demo.launch(allowed_paths=["./data/shop"], server_name="0.0.0.0",show_api=False)
+    demo.launch(allowed_paths=["./data/shop"], server_name="0.0.0.0",show_api=False,favicon_path=(os.path.join(os.path.dirname(__file__), "avatar.png")))
 
