@@ -62,7 +62,6 @@ class ImageAnalysis:
         if match:
             # Extraction et affichage du premier élément entre accolades
             result = "{"+match.group(1)+"}"
-            print(result)
         else:
             print("Aucun contenu trouvé entre accolades.")
         print("Final Result from LLM : "+result)

@@ -7,14 +7,20 @@ class InvokeRuleServer:
 
         # Données à envoyer dans le payload de la requête POST
         self.payload =   {
-        "extractedPictureElements": {
-            "skinColor": "Light", 
-            "hairColor": "Black",
-            "gender": "Male",
-            "age": "30"
+            "extractedPictureElements": {
+                "skinColor": "Light", 
+                "hairColor": "Black",
+                "gender": "Male",
+                "age": "30"
+            }
         }
-        }
-
+        self.trace={ 
+            "__TraceFilter__": {
+                "none": True,
+                "infoTotalRulesFired": True,
+                "infoRulesFired": True
+                }
+            }
         # Informations d'authentification
         self.username = 'odmAdmin'
         self.password = 'odmAdmin'
@@ -25,10 +31,10 @@ class InvokeRuleServer:
         # Effectuer la requête POST avec authentification Basic
         rulesetPath="/marketing/advertisement_advisor"
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        params=dict(extractedPictureElements['extractedPictureElements'])
+        params = {**extractedPictureElements, **self.trace}
         try:
             response = requests.post(self.odm_server_url+'/DecisionService/rest'+rulesetPath, headers=headers,
-                                    json=extractedPictureElements, auth=HTTPBasicAuth(self.username, self.password))
+                                    json=params, auth=HTTPBasicAuth(self.username, self.password))
 
             # Vérifier la réponse
             if response.status_code == 200:

@@ -28,6 +28,18 @@ image_analysis = ImageAnalysis(server_url=ollama_server_url)
 
 rule_server = InvokeRuleServer(odm_server_url)
 
+def extractRulesTraceInformations(props):
+    link=''
+    name=''
+    for prop in  props:
+        if prop['name'] == 'ilog.rules.teamserver.elementID':
+            # Extraire et afficher la valeur de 'value' pour cette propriété
+            link="http://odmAdmin:odmAdmin@localhost:9060/decisioncenter/t/library#editor?baselineId=brm.Branch:74:74&id="+prop['value']
+        if prop['name'] == 'ruleExecutionShortName':
+            # Extraire et afficher la valeur de 'value' pour cette propriété
+            name=prop['value']
+
+    return name,link
 
 def print_like_dislike(x: gr.LikeData):
     print(x.index, x.value, x.liked)
@@ -74,7 +86,7 @@ def format_to_markdown(data):
                   "tailoredChannels":"Channel",
                   "discount":"Discount"
                   }
-    for key, items in data.items():
+    for key, items in data['adProposal'].items():
         title=  friendlyName.get(key, key)  # Utilise la clé elle-même comme titre par défaut
         if hasattr(items, "__len__") and len(items) != 0:
             # Ajout de chaque élément de la liste comme point de puce
@@ -91,7 +103,10 @@ def format_to_markdown(data):
             if(key == "discount") and items > 0.0:                 
                 title=  friendlyName.get(key, key)  # Utilise la clé elle-même comme titre par défaut
                 markdown_text += f"### **{title} : <span style=\"color:blue\">{items} %</span>**"
-
+    markdown_text +=f"\n**Decision Taken :**"
+    for item in data['__decisionTrace__']['rulesFired']['ruleInformation']:
+        name, link = extractRulesTraceInformations(item['properties']['property'])
+        markdown_text +=f" ["+name+"]("+link+")&nbsp;,  "
         
 
     return markdown_text
@@ -99,8 +114,7 @@ def format_to_markdown(data):
 def formatDecisionResponse(message):
     if "error" in message:
         return message['error']
-    params=message['adProposal']
-    return format_to_markdown(params)
+    return format_to_markdown(message)
 
 
 
@@ -119,6 +133,9 @@ def bot(history):
 image_paths = [os.path.join(image_folder, file) for file in os.listdir(image_folder) if file.endswith(('png', 'jpg', 'jpeg'))]
 check_env()
 with gr.Blocks() as demo:
+    with gr.Row():
+        gr.HTML("<h1>Product recommandation - Operation Decision Manager with Vision Assistant</h1>")
+
     chatbot =  gr.Chatbot(
             [],
             label="chatbot",
@@ -130,17 +147,19 @@ with gr.Blocks() as demo:
     with gr.Row():
         gallery = gr.Gallery(label="Sample Galery", value=image_paths , columns=[3], rows=[1], object_fit="cover", height=300)
         btn_img = gr.Image(type="filepath", height=300)
-
-    btn = gr.Button("Analyse image")
+    with gr.Row():
+        btn = gr.Button("Analyse image")
+    with gr.Row():
+        gr.HTML("Select or upload a photo and click on Analyse image. Use <b>odmAdmin/odmAdmin</b> to log in <a href=\"http://localhost:9060/decisioncenter\">Operation Decision Manager</a>. Source code on <a href=\"https://github.com/DecisionsDev/llm-odm/tree/imagesanalysis/chat-with-images\">github</a>.")
     file_msg = btn.click(add_file, [chatbot, btn_img], [chatbot], queue=False).then(
         bot, chatbot, chatbot)
 
     gallery.select(on_select_gallery_image, None, None)
 
-    chatbot.like(print_like_dislike, None, None)
+#    chatbot.like(print_like_dislike, None, None)
 
 
 demo.queue()
 if __name__ == "__main__":
-    demo.launch(allowed_paths=["./data/shop"], server_name="0.0.0.0")
+    demo.launch(allowed_paths=["./data/shop"], server_name="0.0.0.0",show_api=False)
 
