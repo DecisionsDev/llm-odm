@@ -10,6 +10,10 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 
 ![Console with Business console](images/presentation.png)
 
+## Proof of concept 
+
+![Sample faces](images/demo-screen.png)
+
 
 ## How it's work
 
@@ -158,6 +162,7 @@ In essence, the Operational Decision Manager in this architecture is not just a 
 
 <img width="642" alt="dc-dt" src="https://github.com/DecisionsDev/llm-odm/assets/24404215/3cee3568-6c7e-46f6-98ca-862b99c20f92">
 
+<img width="741" alt="dc-rules" src="https://github.com/DecisionsDev/llm-odm/assets/24404215/84f027da-4512-4aa7-bfbf-c98beacab6f8">
 
 
 ## Pre-requisites
