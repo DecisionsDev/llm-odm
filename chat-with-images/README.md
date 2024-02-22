@@ -8,13 +8,35 @@ The fusion of ODM's logical rigor with Llava's perceptive prowess creates a symb
 
 We will delve into specific scenarios where the ODM-Llava integration unlocks new possibilities, from enhancing automated surveillance systems with intelligent decision-making to revolutionizing medical diagnostics with visually informed rule-based analyses. This exploration will not only highlight the individual strengths of ODM and Llava but also illuminate how their combination paves the way for innovative AI applications that are smarter, more efficient, and more aligned with human-like reasoning and perception.
 
-
-## Architecture
 ![Console with Business console](images/presentation.png)
 
-In this prototype we use the RAG architecture.
-In the context of artificial intelligence, RAG stands for “Retrieval-Augmented Generation”. It is a relatively new technique that improves the quality of generative AI systems by allowing large language models (LLMs) to access additional data resources without needing to be retrained. In other words, RAG optimizes the output of an LLM with targeted information without modifying the underlying model itself. This targeted information can be more up-to-date than the LLM and specific to a particular organization or industry. This means that the generative AI system can provide more contextually appropriate responses to prompts and base them on extremely current data.
-By this way, we are able to augment the LLM model with the ODM documentation. 
+
+## How it's work
+
+
+### Step 1. Initial Image Analysis with Llava Computer Vision Models:
+
+An image undergoes analysis by the Llava computer vision system, which has been trained to identify and extract specific characteristics pertinent to individualized assessment.
+This advanced vision model interprets visual cues from the image and compiles these into a structured JSON format, capturing details such as hair color, age, skin tone, and gender—key elements that could influence subsequent recommendations.
+
+### Step 2. Strategic Recommendations via the Decision Server:
+
+The structured data is relayed to the Operational Decision Manager, a sophisticated server designed to synthesize the visual data into actionable insights.
+Utilizing a complex set of rules and algorithms, the Decision Server adeptly translates the attributes extracted from the image into a series of personalized recommendations. This could include targeted discounts, bespoke advice, or product suggestions that align with the identified characteristics, thereby increasing the relevance and effectiveness of marketing efforts or sales strategies.
+
+### Step 3. Output with Transparency and Traceability:
+
+The Decision Server outputs a comprehensive JSON payload that not only contains the finely tuned recommendations but also a set of runtime traces. These traces are crucial for understanding the logic behind each recommendation.
+The inclusion of runtime traces is a significant benefit of using the Operational Decision Manager. It ensures transparency and accountability in automated decision-making processes. Stakeholders can trace back every decision to the specific rule or data point that triggered it, allowing for a level of interpretability often lacking in complex AI systems.
+
+### Step 4. Enhanced Decision Repository for In-depth Analysis:
+
+The runtime traces are more than just a log; they provide an entry point to a deeper decision repository. Here, users can delve into the decision-making framework, examining the intricate web of rules and data that inform the engine's outputs.
+This repository acts as a knowledge base, empowering users to refine decision logic, audit outcomes for compliance, and enhance the decision-making process over time based on historical data and outcomes analysis.
+
+In essence, the Operational Decision Manager in this architecture is not just a cog in the machine but a dynamic tool that brings several benefits. It enhances customer engagement by personalizing interactions, improves the decision-making process through learning and adaptation, and upholds the principles of explainable AI by making its processes transparent and understandable to human operators.
+
+
 
 ## Pre-requisites
   * Docker
