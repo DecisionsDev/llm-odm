@@ -12,7 +12,7 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 
 ## Proof of concept 
 
-![Sample faces](images/demo-screen.png)
+![Sample faces](images/demo-movie.gif)
 
 
 ## How it's work
