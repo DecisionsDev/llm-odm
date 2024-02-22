@@ -120,10 +120,10 @@ def formatDecisionResponse(message):
 
 def bot(history):
     image=history[-1][0]
-
+    rulesParameters=image_analysis.analyze_image(image)
     for updated_history in displayBotMessage(history, "**Analyse pitcture with LLM**</br>",True): yield updated_history
 #    rulesParameters=image_analysis.fake_analyse(image)
-    rulesParameters=image_analysis.analyze_image(image)
+
     for updated_history in displayBotMessage(history, formatImageAnalysis(rulesParameters),False): yield updated_history
     for updated_history in displayBotMessage(history, "\n\n**Compute Recommandation with Decision Engine**\n",False): yield updated_history
     decisionResponse = rule_server.invokeRules(rulesParameters)
