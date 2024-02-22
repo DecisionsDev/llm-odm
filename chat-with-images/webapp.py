@@ -34,7 +34,7 @@ def extractRulesTraceInformations(props):
     for prop in  props:
         if prop['name'] == 'ilog.rules.teamserver.elementID':
             # Extraire et afficher la valeur de 'value' pour cette propriété
-            link="http://odmAdmin:odmAdmin@localhost:9060/decisioncenter/t/library#editor?baselineId=brm.Branch:74:74&id="+prop['value']
+            link="http://odmAdmin:odmAdmin@localhost:9060/decisioncenter/t/library#editor?baselineId=brm.Branch:1:1&id="+prop['value']
         if prop['name'] == 'ruleExecutionShortName':
             # Extraire et afficher la valeur de 'value' pour cette propriété
             name=prop['value']

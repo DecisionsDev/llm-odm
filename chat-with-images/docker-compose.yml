@@ -6,7 +6,7 @@ services:
     container_name: odm
     environment:
       - LICENSE=accept
-      - SAMPLE=tue
+      - SAMPLE=false
     healthcheck:
       test: curl -k -f http://localhost:9060/res/login.jsf || exit 1
       interval: 5s
