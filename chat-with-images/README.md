@@ -16,6 +16,18 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 ### Step 1. Initial Image Analysis with Llava Computer Vision Models:
 
 An image undergoes analysis by the Llava computer vision system, which has been trained to identify and extract specific characteristics pertinent to individualized assessment.
+Here is the prompt used:
+```text
+Extract the following information: hair color, age, skin color and gender. """
+Format the results in JSON text, ensuring to include the fields \"hairColor\", \"age\", \"skinColor\" and \"gender\". """
+The expected result characteristics are: """
+The results must be accurate and reliable."""
+Gender values should Male or Female. """
+age should be a number. """
+skinColor should be one of this values Dark, Ebony, Ivory, Light, Medium or Unknown """
+hairColor should be one of this values  Black, Blonde, Brown, Gray, Red, White or Unknown. """
+```
+
 This advanced vision model interprets visual cues from the image and compiles these into a structured JSON format, capturing details such as hair color, age, skin tone, and gender—key elements that could influence subsequent recommendations.
 
 ```json
