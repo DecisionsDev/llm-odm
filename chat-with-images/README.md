@@ -212,6 +212,7 @@ This will run the ODM for Developpers docker images in conjonction with the samp
 
 and select or upload or take a photo then click the ***```Analyse Image```*** button.
 
+> If there is an error when contacting Ollama server you can try this workaround. Edit the docker-compose.yml file and change the line ```OLLAMA_SERVER_URL=http://host.docker.internal:11434``` by ```OLLAMA_SERVER_URL=http://YOURIP:11434```
 You can browse to Rules that is applyied in the sample by :
 
 Open Decision Center at this location : http://localhost:9060/decisioncenter
