@@ -165,14 +165,16 @@ In essence, the Operational Decision Manager in this architecture is not just a 
 
 
 
-## Pre-requisites
+## Prerequisites
+Before installation, ensure that all necessary prerequisites are met, including system requirements and software dependencies.
+
   * Docker
   * docker-compose
   * Macbook M1 or equivalent. 
 
 Tested on Macbook and Windows 11.
 
-## Running the sample
+## Installation Instructions
 ### Install Ollama
 [Ollama](https://ollama.ai/) allows you to run open-source large language models, such as Llama 2, locally.
 
@@ -192,7 +194,8 @@ ollama pull llava:v1.6
 When the app is running, all models are automatically served on [localhost:11434](http://localhost:11434)
 > In some OS configuration you should [allow additional web origins to access Ollama](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama)
 
-### Run the application
+### Running the Demo Application
+A demonstration application is available to showcase the capabilities of the integrated system. Follow the step-by-step guide to run the demo and explore the features of this innovative integration.
 
 1. Open a new terminal
 2. Build the docker demonstration 
