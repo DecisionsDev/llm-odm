@@ -159,11 +159,10 @@ The runtime traces are more than just a log; they provide an entry point to a de
 This repository acts as a knowledge base, empowering users to refine decision logic, audit outcomes for compliance, and enhance the decision-making process over time based on historical data and outcomes analysis.
 
 In essence, the Operational Decision Manager in this architecture is not just a cog in the machine but a dynamic tool that brings several benefits. It enhances customer engagement by personalizing interactions, improves the decision-making process through learning and adaptation, and upholds the principles of explainable AI by making its processes transparent and understandable to human operators.
+<table><tr><td><img src="images/dc-dt.png" width="400" height="300"></td><td><img src="images/dc-rules.png" width="400" height="300"></td></tr></table>
 
 
-![Sample Decision Table](images/dc-dt.png)
 
-![Sample Business Rules](images/dc-rules.png)
 
 
 ## Pre-requisites
@@ -191,7 +190,7 @@ ollama pull llava:v1.6
 ```
 
 When the app is running, all models are automatically served on [localhost:11434](http://localhost:11434)
-
+> In some OS configuration you should [allow additional web origins to access Ollama](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama)
 
 ### Run the application
 
