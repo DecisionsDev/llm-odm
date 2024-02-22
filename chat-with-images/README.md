@@ -160,9 +160,10 @@ This repository acts as a knowledge base, empowering users to refine decision lo
 
 In essence, the Operational Decision Manager in this architecture is not just a cog in the machine but a dynamic tool that brings several benefits. It enhances customer engagement by personalizing interactions, improves the decision-making process through learning and adaptation, and upholds the principles of explainable AI by making its processes transparent and understandable to human operators.
 
-<img width="642" alt="dc-dt" src="https://github.com/DecisionsDev/llm-odm/assets/24404215/3cee3568-6c7e-46f6-98ca-862b99c20f92">
 
-<img width="741" alt="dc-rules" src="https://github.com/DecisionsDev/llm-odm/assets/24404215/84f027da-4512-4aa7-bfbf-c98beacab6f8">
+![Sample Decision Table](images/dc-dt.png)
+
+![Sample Business Rules](images/dc-rules.png)
 
 
 ## Pre-requisites
