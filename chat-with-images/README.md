@@ -1,5 +1,5 @@
 
-## Introduction 
+# Introduction 
 In the rapidly advancing field of artificial intelligence, the integration of symbolic AI systems like Operational Decision Management (ODM) with cutting-edge computer vision models such as Llava presents a groundbreaking approach. ODM, a platform known for its robust rule-based decision-making capabilities, excels in structuring complex logic and business rules into coherent, manageable systems. This enables precise, consistent decision-making processes across various business applications, from finance to healthcare.
 
 Conversely, Llava, a state-of-the-art computer vision model, epitomizes the pinnacle of deep learning's ability to interpret and analyze visual data. By transforming raw images and video into actionable insights, Llava extends the boundaries of how machines understand and interact with the visual world around them.
@@ -164,15 +164,18 @@ In essence, the Operational Decision Manager in this architecture is not just a 
 
 
 
+# Running the Demo Application
+
+A demonstration application is available to showcase the capabilities of the integrated system. Follow the step-by-step guide to run the demo and explore the features of this innovative integration.
 
 ## Prerequisites
 Before installation, ensure that all necessary prerequisites are met, including system requirements and software dependencies.
 
   * Docker
   * docker-compose
-  * Macbook M1 or equivalent. 
+  * Macbook M1 or equivalent with a NVidia GPU card.
+  * git
 
-Tested on Macbook and Windows 11.
 
 ## Installation Instructions
 ### Install Ollama
@@ -194,8 +197,14 @@ ollama pull llava:v1.6
 When the app is running, all models are automatically served on [localhost:11434](http://localhost:11434)
 > In some OS configuration you should [allow additional web origins to access Ollama](https://github.com/ollama/ollama/blob/main/docs/faq.md#how-can-i-allow-additional-web-origins-to-access-ollama)
 
-### Running the Demo Application
-A demonstration application is available to showcase the capabilities of the integrated system. Follow the step-by-step guide to run the demo and explore the features of this innovative integration.
+### Clone the code
+1. Open a new terminal
+```shell
+git clone https://github.com/DecisionsDev/llm-odm.git
+cd llm-odm
+```
+
+### Launch the docker topology
 
 1. Open a new terminal
 2. Build the docker demonstration 
