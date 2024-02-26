@@ -17,7 +17,7 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 
 ## How it's work
 
-![Workflow](images/worflow.jpg)
+![Workflow](images/workflow.jpg)
 
 ### Step 1. Initial Image Analysis with Llava Computer Vision Models:
 
