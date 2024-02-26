@@ -17,6 +17,8 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 
 ## How it's work
 
+![Workflow](images/worflow.jpg)
+
 ### Step 1. Initial Image Analysis with Llava Computer Vision Models:
 
 An image undergoes analysis by the Llava computer vision system, which has been trained to identify and extract specific characteristics pertinent to individualized assessment.
