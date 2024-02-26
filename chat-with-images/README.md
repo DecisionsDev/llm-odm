@@ -8,7 +8,10 @@ The fusion of ODM's logical rigor with Llava's perceptive prowess creates a symb
 
 We will delve into specific scenarios where the ODM-Llava integration unlocks new possibilities, from enhancing automated surveillance systems with intelligent decision-making to revolutionizing medical diagnostics with visually informed rule-based analyses. This exploration will not only highlight the individual strengths of ODM and Llava but also illuminate how their combination paves the way for innovative AI applications that are smarter, more efficient, and more aligned with human-like reasoning and perception.
 
-![Console with Business console](images/presentation.png)
+
+<p align="center">
+    <img src="images/presentation.png" width="600" height="500">
+p>
 
 ## Proof of concept 
 
@@ -17,7 +20,10 @@ We will delve into specific scenarios where the ODM-Llava integration unlocks ne
 
 ## How it's work
 
-![Workflow](images/workflow.jpg)
+<p align="center">
+    <img src="images/workflow.jpg" >
+p>
+
 
 ### Step 1. Initial Image Analysis with Llava Computer Vision Models:
 
