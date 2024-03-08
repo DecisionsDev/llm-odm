@@ -1,3 +1,6 @@
 **/.vscode
 chat-with-documentation/docs/*
 chat-with-documentation/data/*
+llm-proto-gen/data/*
+llm-proto-gen/docs/*
+**/__pycache__

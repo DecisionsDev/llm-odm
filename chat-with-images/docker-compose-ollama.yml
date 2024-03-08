@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  ollama:
+    image: ollamacustom
+    hostname: ollama
+    container_name: ollama
+    build:
+      dockerfile: ./Dockerfile.ollama
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:  
+      test: curl -k -f http://localhost:11434/ || exit 1
+    ports:
+      - 11434:11434
+  ollamasetup:
+    image: ollama/ollama
+    container_name: ollamasetup
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: [ "bash", "-c", "echo 'start pulling llava model this can take some minutes...' && ollama pull llava:v1.6 && echo '--------------' && echo 'LLM environment is ready'" ]      
+  demo:
+    environment:
+      - OLLAMA_SERVER_URL=http://ollama:11434
+volumes:
+  ollama:
