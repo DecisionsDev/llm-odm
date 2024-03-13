@@ -1,0 +1,6 @@
+Extract the following information: estimated weight, number, kind of vegetable or fruit.
+Format the results in JSON text, ensuring to include the fields \"number\", \"kind\" . 
+The expected result characteristics are:
+The results must be accurate and reliable.
+Kind of vegetable or fruits values should be one of this value : tomato, kiwi, cumcumber, apple, eggplant, clementine, unknown 
+Number of fruits or vegetable. Should be a number. If you don't estimate put -1.

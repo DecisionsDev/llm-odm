@@ -1,0 +1,5 @@
+gradio
+langchain
+langchain-experimental
+
+ollama
