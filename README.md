@@ -19,7 +19,7 @@ There are two main value props the LangChain framework provides:
 # Govern your Decision Automation projects in natural language
 
 In this sample we aim to bring ODM Decision Center management features into a conversational user experience. We leverage Langchain and an LLM to provide a conversational UX to interrogate and act on the IBM ODM project repository. In this integration we reuse the Swagger REST API provided by IBM ODM Decision Center. The LLM brings natural its language processing for understanding and generating text, while LangChain offers chaining of prompts and the wrapping of any REST API in plain text, put together in the context of a bot conversation. 
-Diving in more details we utilize the [LangChain Swagger Agent API](https://python.langchain.com/en/latest/modules/agents.html).
+Diving in more details we utilize the [LangChain Swagger Agent API](https://python.langchain.com/docs/integrations/toolkits/openapi/).
 
 The installation instructions are available in this [directory](chat-with-businessconsole).
 
