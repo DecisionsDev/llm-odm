@@ -38,7 +38,7 @@ The instructions to install it can be found in this [directory](chat-with-loande
 # Query an IBM ODM decision service trace in natural language
 
 In this sample we will show you how to query Decision Service data execution traces through natural language. You can select your dataset, express metrics and KPIs in plain text.
-This integration uses the [Spark LangChain integration](https://python.langchain.com/en/latest/modules/agents/toolkits/examples/spark.html?highlight=spark).
+This integration uses the [Spark LangChain integration](https://python.langchain.com/docs/integrations/toolkits/spark_sql/).
 
 Find the installation instructions at [directory](chat-with-executions-data). 
 
