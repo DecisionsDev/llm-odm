@@ -1,0 +1,28 @@
+{
+    "ServerConfig": [
+        {
+            "name": "ollama_mistral",
+            "username": "string",
+            "api_key": "string",
+            "url": "http://localhost:11434",
+            "model_name": "mistral",
+            "model_type": "ollama"
+        },
+        {
+            "name": "watson_granite",
+            "username": "string",
+            "api_key": "pak-1F96PLrhK6J9TxjokcReuym3UYRCisvaq7jjtHxFwQ0",
+            "url": "https://bam-api.res.ibm.com",
+            "model_name": "ibm/granite-20b-code-instruct-v1",
+            "model_type": "watsonx"
+        },
+        {
+            "name": "watson_llama70b",
+            "username": "string",
+            "api_key": "pak-1F96PLrhK6J9TxjokcReuym3UYRCisvaq7jjtHxFwQ0",
+            "url": "https://bam-api.res.ibm.com",
+            "model_name": "meta-llama/llama-2-70b",
+            "model_type": "watsonx"
+        }
+    ]
+}

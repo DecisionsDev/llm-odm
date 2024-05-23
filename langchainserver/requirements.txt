@@ -1,0 +1,7 @@
+
+ibm-generative-ai
+pydantic==1.10.13
+langchain
+langserve[all]
+langchain-cli
+ollama
