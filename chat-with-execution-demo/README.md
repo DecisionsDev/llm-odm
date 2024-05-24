@@ -24,7 +24,7 @@ For a complete list of supported models and model variants, see the [Ollama mode
 3. From command line, fetch the llava model.
    
 ```shell
-ollama pull llava:v1.6
+ollama pull mistral
 ```
 
 When the app is running, all models are automatically served on [localhost:11434](http://localhost:11434)
@@ -60,5 +60,6 @@ approximately $112.35. The total amount paid over the life of the loan would be 
 ==> This is hallucination.
 
 
-Result from the LLM using Rules : Call rules with this loan amount: 10000 Duration : 10 years
+Result from the LLM using Rules agent plug-in : 
+  Invoke rules engine with this this loan parameters  amount: 10000 Duration : 10 years -> The llm extract the values from the text and call the Agent function with this parameters. Then we can invoke the rule engine.
 ==> Compute every time the same results.
