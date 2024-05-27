@@ -10,9 +10,6 @@ from langchain_core.pydantic_v1 import (
     Field  
 )
 import json
-class CreateProjectInput(BaseModel):
-    project_name: str = Field(..., description="Name of a decision center project")
-    project_desc: str = Field(..., description="A definition or a description of the project")
 
 class LoanValidationInput(BaseModel):
     loan_amount: str = Field(..., description="The loan amount")

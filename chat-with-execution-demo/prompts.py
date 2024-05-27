@@ -36,3 +36,25 @@ SUFFIX = """Begin! Remember, all actions must be formatted as markdown JSON stri
   Thought:{agent_scratchpad}"""
 
 
+FORMAT_INSTRUCTIONS_DIRECT=  """RESPONSE FORMAT INSTRUCTIONS
+----------------------------
+
+When responding to me, please output a response with this format:
+
+Use this if you want to respond directly to the human. Markdown code snippet formatted in the following schema:
+
+```json
+{{{{
+    "action": "Final Answer",
+    "action_input": string \\\\ You should put what you want to return to use here in a human readable text.
+}}}}
+```"""
+
+SUFFIX_DIRECT = """Do not add any additional comments.Do not make any greetings, like, Here your response.
+  Question: {input}
+"""
+
+PREFIX_DIRECT = """<s><<SYS>>Assistant is an expert in loan calculation designed to assist with a wide range of tasks.
+
+
+:<</SYS>>"""
