@@ -1,16 +1,23 @@
 ## Introduction 
+The integration of the Langchain project with ODM, a cutting-edge decision management product, signifies a significant leap forward in the realms of language processing and data-driven decision-making. By combining Langchain's advanced language analysis technology with the powerful capabilities of ODM, users can unlock a multitude of benefits that revolutionize their decision-making processes. This integration offers a seamless and robust solution for businesses looking to harness the power of multilingual data, optimize operations, and drive strategic outcomes. In the following lines, we will explore five compelling advantages that arise from this integration.
+
+In this sample we leverage the miniloan decision service provided as a sample in IBM ODM. The [LangChain AgentExecutor Chain]([https://python.langchain.com/docs/integrations/toolkits/openapi/](https://python.langchain.com/v0.1/docs/modules/agents/)) will be used to interact with the "MiniLoan" decision service. 
 
 
+<img src="chat-with-execution-demo/images/demo_presentation.gif"  />
 
 ## Pre-requisites
-  * Python 3.8 or higher
+  * Python 3.8 or higher (not needed for docker uses)
   * docker 
-  * An OpenAI account
+  * A WatsonX account or a ollama (for local execution)
 
 ## Setup Pre-Requisites
 
-
 ## Installation Instructions
+
+## For local execution using Ollama 
+This option require a machine that have enough GPU. For example, a mac with ARM architecture is enough
+
 ### Install Ollama
 [Ollama](https://ollama.ai/) allows you to run open-source large language models, such as Llama 2, locally.
 
