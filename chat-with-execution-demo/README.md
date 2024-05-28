@@ -3,7 +3,6 @@ The integration of the Langchain project with ODM, a cutting-edge decision manag
 
 In this sample we leverage the miniloan decision service provided as a sample in IBM ODM. The [LangChain AgentExecutor Chain]([https://python.langchain.com/docs/integrations/toolkits/openapi/](https://python.langchain.com/v0.1/docs/modules/agents/)) will be used to interact with the "MiniLoan" decision service. 
 
-
 <img src="chat-with-execution-demo/images/loanvalidationchat.gif"  />
 
 ## Pre-requisites
