@@ -35,5 +35,5 @@ class LoanValidationTool(BaseTool):
     def invokeRules(self, loan_amount,duration,interest_rates):      
 #      token = self.getToken();
       loan_amount = str(loan_amount).strip()
-      return "Call rules with this loan amount: "+loan_amount+" Duration : "+duration+" "
+      return "LLM extract this informations "+loan_amount+" Duration : "+duration+" and call the rules engine result is a rates of 1.4%"
 
