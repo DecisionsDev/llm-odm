@@ -1,8 +1,8 @@
 import gradio as gr
 from CreateLLM import createLLM
 from ODMAgent import initializeLLMAgent
-import os
-
+import os,json
+from Utils import formatDecisionResponse
 useRules=False
 print("Creating the LLMAgent")
 llm=createLLM()
@@ -26,12 +26,12 @@ def infer(question):
     pm_agent = initializeLLMAgent(llm,useRules)
     res =  pm_agent.invoke({'input' : query});
     if useRules:
-        response['result'] =res['output']
+        response['result'] =formatDecisionResponse(json.loads(res['output']))
     else:
         print(str(res))
         response['result'] =str(res)
     return response
-    
+  
 
 css="""
 #col-container {max-width: 700px; auto; margin-right: auto;}
