@@ -37,7 +37,7 @@ css="""
 #col-container {max-width: 700px; auto; margin-right: auto;}
 #resources{
   background-color: rgb(30, 58, 75);
-  margin: 1000px 10 10 10;
+
 }
 #resources h3{
   color: white;
@@ -50,15 +50,17 @@ css="""
 
 title = """
         <div id="resources">
-        <h3>&nbsp;Loan Validator Chat</h3>
+       <h3>IBM</span>&nbsp;LLM+Decisions Chatbot</h3>
+
         </div>
+
 """
+with gr.Blocks(theme=gr.themes.Monochrome(),css=css) as demo: # works
 
-
-with gr.Blocks(css=css) as demo:
+#with gr.Blocks(css=css) as demo:
     gr.HTML(title)
 
-    chatbot = gr.Chatbot(show_copy_button=True,
+    chatbot = gr.Chatbot(show_copy_button=True,   
                             avatar_images=(None, (os.path.join(os.path.dirname(__file__), "avatar.png"))       ))
     with gr.Row():                   
         question = gr.Textbox(label="Question", placeholder="Type your question and hit Enter ")
@@ -68,6 +70,13 @@ with gr.Blocks(css=css) as demo:
         question.submit(add_text, [chatbot, question], [chatbot, question]).then(
             bot, [chatbot], [chatbot]
         )
-        
+    with gr.Row():
+        with gr.Accordion("See Details"):
+
+            file_path = 'detail.md'
+            
+            with open(file_path, 'r') as file:
+                file_content = file.read()
+            gr.Markdown(file_content)
 
 demo.launch(allowed_paths=[], server_name="0.0.0.0",show_api=False,favicon_path=(os.path.join(os.path.dirname(__file__), "avatar.png")))
