@@ -1,0 +1,5 @@
+ibm-generative-ai
+langchain-community 
+langchain-core
+langchain
+gradio

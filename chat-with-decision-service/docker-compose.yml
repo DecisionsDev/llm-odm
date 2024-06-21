@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  odm:
+    image: ibmcom/odm
+    hostname: odm
+    container_name: odm
+    environment:
+      - LICENSE=accept
+      - SAMPLE=true
+    healthcheck:
+      test: curl -k -f http://localhost:9060/res/login.jsf || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 10s
+    ports:
+      - 9060:9060
+  demo:
+    image: demo
+    hostname: demo
+    build: .
+    depends_on:
+      odm:
+        condition: service_healthy
+    environment:
+      - ODM_SERVER_URL=http://odm:9060
+      - OLLAMA_SERVER_URL=http://host.docker.internal:11434
+      - PYTHONUNBUFFERED=1
+    ports:
+      - 7860:7860
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
