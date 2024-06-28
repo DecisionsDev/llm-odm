@@ -11,7 +11,7 @@ def createLLMWatson():
     if not 'GENAI_API' in os.environ:
         print('Please set env variable GENAI_API to your IBM Generative AI  endpoint URL')
         exit()
-    watson_model=os.getenv("MODEL_NAME","mistralai/mistral-7b-instruct-v0-2")
+    watson_model=os.getenv("MODEL_NAME","mistralai/mixtral-8x7b-instruct-v01")
     api_key = os.getenv("GENAI_KEY")
     api_url = os.getenv("GENAI_API")
 

@@ -2,4 +2,5 @@ ibm-generative-ai
 langchain-community 
 langchain-core
 langchain
+langgraph
 gradio
